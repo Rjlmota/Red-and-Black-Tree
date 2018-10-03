@@ -3,6 +3,7 @@ using namespace std;
 class node{
 	public: 
 		int key;
+		char color;
 
 		node* leftChild; // Pointer to left child.	
 		node* rightChild; // Pointer to the right child.
@@ -17,6 +18,7 @@ class node{
 
 		void printNode(); // Function to print node's content.
 		int getKey(); // Function to return the content of a node.
+		char getColor(); // Function to return the color of a node.
 		node* getLeftChild(); // Function to return a pointer to the left child.
 		node* getRightChild(); // Function to return a pointer to the right child.
 		void setRightChild(node* p); // Function to set a value for the right child.
@@ -26,12 +28,14 @@ class node{
 
 node::node(){
 	key=0;
+	color='r';
 	leftChild=NULL;
 	rightChild=NULL;
 }
 
 node::node(int k){
 	key = k;
+	color='r';
 	leftChild=NULL;
 	rightChild=NULL;	
 }
@@ -44,6 +48,10 @@ void node::printNode(){
 
 int node::getKey(){
 	return key;
+}
+
+char node::getColor(){
+	return color;
 }
 
 node* node::getLeftChild(){

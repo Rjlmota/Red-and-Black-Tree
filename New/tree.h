@@ -13,7 +13,9 @@ class tree {
 
 		~tree(); //Destructor
 
-		void eraseData(node *localRoot); //Function used by destructor
+		node* getUncle(int key); // Function used to get the node uncle.
+		node* getGrampa(int key); // Function used to get the node grampa.
+		void eraseData(node *localRoot); // Function used by destructor.
 		node* search(int key); // Function to search for node.
 		node* search(int key, node*& previous, char &direction); // Used by removal method.
 		void insert(int key); // Function to insert a node.
@@ -52,24 +54,68 @@ node* tree::search(int key){
 
 void tree::insert(int key){
 	//Adapt to RBT.
+	
+   /* CASE 1: NODE IS ROOT: */
+	if (root==NULL){
+		
+		/* DO: INSERTED NODE CHANGES TO BLACK */
+		//insert_case1(key);
+	
+	}else{
+		
+		node* current = root;
+		node* parent = NULL;
+		
+		while(current!=NULL){
+			parent = current;
+			if (key > current->getKey())
+				current = current->getRightChild();
+			else
+				current = current->getLeftChild();
+		}
+		
+		node* uncle = getUncle(parent->getKey());
+		char pColor = parent->getColor();
+		char uColor = uncle->getColor();
+		
+	   	/* CASE 2: NODE'S PARENT IS BLACK */
+		if (pColor == 'b'){
+			
+			/* DONT TO ANYTHING */
+			//insert_case2(key);
+		}
 
-   /* CASE 1: NODE IS ROOT:
-      DO: INSERTED NODE CHANGES TO BLACK
-   */
+   		/* CASE 3: PARENT AND UNCLE ARE RED. */
+		else if ((pColor == 'r')&&(uColor == 'r')){
+		
+			/* 
+			DO: CHANGE PARENT AND UNCLE TO BLACK.
+        	CHANGE GRANDFATHER TO RED. 
+			*/
+			//insert_case3(key);
+		}
+		
+		/* CASE 4: FATHER IS RED AND UNCLE IS BLACK. */
+		else if((pColor == 'r')&&(uColor == 'b')){
+			
+			/* 
+			STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
+        	DO: ROTACIONE O INSERIDO E O PAI.
+      		STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+			*/
+			
+			//insert_case4(key);
+		}
+		
+		/* ERRO! */
+		else{
+			
+			cout << "ERRO 404: CASE NOT FOUND!\n" ; 
+			
+		}
+		
+	}
 
-   /* CASE 2: NODE'S PARENT IS BLACK
-      DONT TO ANYTHING
-   */
-
-   /* CASE 3: PARENT AND UNCLE ARE RED.
-      DO: CHANGE PARENT AND UNCLE TO BLACK.
-          CHANGE GRANDFATHER TO RED.
-
-   /* CASE 4: FATHER IS RED AND UNCLE IS BLACK:
-      STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
-         DO: ROTACIONE O INSERIDO E O PAI.
-      STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES.
-      */
 
 
 }
@@ -165,4 +211,46 @@ node* tree::search(int key, node*& previous, char &direction){
       }
    }
    return 0;
+}
+
+node* tree::getUncle(int key){
+	// KEY = PARENT->KEY.
+	node* currentP = root;
+	while(currentP != NULL){
+		if (currentP->leftChild->getKey() == key){
+			return currentP->getRightChild();
+		}
+		else if (currentP->rightChild->getKey()== key){
+			return currentP->getLeftChild();
+		}
+		else{
+			if (key > currentP->getKey()){
+				currentP = currentP->getRightChild();
+			}else{
+				currentP = currentP->getLeftChild();
+			}
+		}
+	}
+	return currentP;
+}
+
+node* tree::getGrampa(int key){
+	// KEY = PARENT->KEY.
+	node* currentP = root;
+	while(currentP != NULL){
+		if (currentP->getLeftChild()->getKey() == key){
+			return currentP;
+		}
+		else if (currentP->getRightChild()->getKey()== key){
+			return currentP;
+		}
+		else{
+			if (key > currentP->getKey()){
+				currentP = currentP->getRightChild();
+			}else{
+				currentP = currentP->getLeftChild();
+			}
+		}
+	}
+	return currentP;
 }

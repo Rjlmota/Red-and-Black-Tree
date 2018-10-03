@@ -115,3 +115,34 @@ void tree::printTree(){
 
       cout << endl;
 }  
+
+
+void tree::remove(int key){
+   //Adapt to RBT.
+}
+
+node* tree::search(int key, node*& previous, char &direction){
+   node *currentP;
+   if(root){
+      currentP = root;
+      previous = currentP;
+      while(currentP != NULL){
+         int currentPKey;
+         currentPKey = currentP->getKey();
+         if(currentPKey == key)
+            return currentP;
+
+         if(currentPKey < key){
+            previous = currentP;
+            direction = 'r';
+            currentP = currentP->getRightChild();
+         }
+         else{
+            previous=currentP;
+            direction='l';
+            currentP = currentP->getLeftChild();
+         }
+      }
+   }
+   return 0;
+}

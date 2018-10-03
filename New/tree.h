@@ -52,6 +52,26 @@ node* tree::search(int key){
 
 void tree::insert(int key){
 	//Adapt to RBT.
+
+   /* CASE 1: NODE IS ROOT:
+      DO: INSERTED NODE CHANGES TO BLACK
+   */
+
+   /* CASE 2: NODE'S PARENT IS BLACK
+      DONT TO ANYTHING
+   */
+
+   /* CASE 3: PARENT AND UNCLE ARE RED.
+      DO: CHANGE PARENT AND UNCLE TO BLACK.
+          CHANGE GRANDFATHER TO RED.
+
+   /* CASE 4: FATHER IS RED AND UNCLE IS BLACK:
+      STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
+         DO: ROTACIONE O INSERIDO E O PAI.
+      STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES.
+      */
+
+
 }
 
 void tree::goThrough(){

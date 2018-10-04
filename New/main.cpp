@@ -14,6 +14,7 @@ int main(){
 			
 	arv.insert(3);
 	arv.insert(4);
+  arv.insert(1);
 	arv.printTree();	
 		
 		/*

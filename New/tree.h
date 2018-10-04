@@ -16,6 +16,8 @@ class tree {
 
 		~tree(); //Destructor
 
+		
+		node* getParent(int key); // Function used to get the node's parent.
 		node* getUncle(int key); // Function used to get the node uncle.
 		node* getGrampa(int key); // Function used to get the node grampa.
 		void eraseData(node *localRoot); // Function used by destructor.
@@ -29,6 +31,8 @@ class tree {
 		void insert_case1(node* parent, int key); //bla
 		void insert_case2(node* parent, int key); // Function to add a node for case 2.
 		void switchColor(node* p); // Function to switch color
+
+
 
 };
 
@@ -81,9 +85,10 @@ void tree::insert(int key){
 			}
 		}
 		
-		node* uncle = getUncle(parent->getKey());
+		//node* uncle = getUncle(parent->getKey());
 		char pColor = parent->getColor();
-		char uColor = uncle->getColor();
+		//char uColor = uncle->getColor();
+
 		
 	   	/* CASE 2: NODE'S PARENT IS BLACK */
 		if (pColor == 'b'){
@@ -93,17 +98,17 @@ void tree::insert(int key){
 		}
 
    		/* CASE 3: PARENT AND UNCLE ARE RED. */
-		else if ((pColor == 'r')&&(uColor == 'r')){
+		//else if ((pColor == 'r')&&(uColor == 'r')){
 		
 			/* 
 			DO: CHANGE PARENT AND UNCLE TO BLACK.
         	CHANGE GRANDFATHER TO RED. 
 			*/
 			//insert_case3(key);
-		}
+		//}
 		
 		/* CASE 4: FATHER IS RED AND UNCLE IS BLACK. */
-		else if((pColor == 'r')&&(uColor == 'b')){
+		//else if((pColor == 'r')&&(uColor == 'b')){
 			
 			/* 
 			STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
@@ -112,7 +117,8 @@ void tree::insert(int key){
 			*/
 			
 			//insert_case4(key);
-		}
+		//}
+
 		
 		/* ERRO! */
 		else{
@@ -277,12 +283,35 @@ node* tree::getGrampa(int key){
 	return currentP;
 }
 
+
+
+node* tree::getParent(int key){
+	node *p = root;
+	if(root->key == key)
+		return NULL;
+	else{
+		while(p != NULL){
+
+			if(key == p->key)
+				return p;
+
+			if(key > p->key)
+				p = p->getRightChild();
+			else if(key < p->key)
+				p = p->getLeftChild();
+
+		}
+
+	}
+}
+
+
 void tree::insert_case2(node* parent, int key){
 	node* newNode = new node(key);
 	if (key > parent->getKey()){
-		parent->setRightChild(parent);
+		parent->setRightChild(newNode); // Aquele loop infinito era pq tinha um "parent" em vez de "newNode" aqui haah.
 	}else{
-		parent->setLeftChild(parent);
+		parent->setLeftChild(newNode);
 	}
 }
 

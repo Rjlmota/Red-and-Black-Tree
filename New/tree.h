@@ -264,6 +264,7 @@ node* tree::getUncle(int key){
 
 node* tree::getGrampa(int key){
 	// KEY = PARENT->KEY.
+	/*
 	node* currentP = root;
 	while(currentP != NULL){
 		if (currentP->getLeftChild()->getKey() == key){
@@ -281,24 +282,34 @@ node* tree::getGrampa(int key){
 		}
 	}
 	return currentP;
+	*/
+	cout << "alo" <<endl;
+	node* grampa = NULL;
+	node* parent = getParent(key);
+	grampa = getParent(parent->key);
+	return grampa;
 }
 
 
 
 node* tree::getParent(int key){
 	node *p = root;
+	node *previous = root;
 	if(root->key == key)
 		return NULL;
 	else{
 		while(p != NULL){
 
 			if(key == p->key)
-				return p;
+				return previous;
 
+			previous = p;
 			if(key > p->key)
 				p = p->getRightChild();
 			else if(key < p->key)
 				p = p->getLeftChild();
+
+
 
 		}
 

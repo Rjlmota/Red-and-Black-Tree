@@ -2,6 +2,9 @@
 #include "node.h"
 using namespace std;
 
+//FIX ME: GRAMPA FUNCTION !!!
+//FIX ME: UNCLE FUNCTION !!
+
 
 class tree {
 	private:  
@@ -23,6 +26,9 @@ class tree {
 		void upper(node* localRoot); // Function used to run through the tree.
 		void remove(int key); // Function for removal of node.
 		void printTree(); // Function to print tree.
+		void insert_case1(node* parent, int key); //bla
+		void insert_case2(node* parent, int key); // Function to add a node for case 2.
+		void switchColor(node* p); // Function to switch color
 
 };
 
@@ -54,24 +60,25 @@ node* tree::search(int key){
 
 void tree::insert(int key){
 	//Adapt to RBT.
-	
    /* CASE 1: NODE IS ROOT: */
 	if (root==NULL){
+		node *p = new node(key);
 		
 		/* DO: INSERTED NODE CHANGES TO BLACK */
-		//insert_case1(key);
+		root = p;
+		switchColor(root);
 	
-	}else{
+	}else{	
 		
 		node* current = root;
 		node* parent = NULL;
-		
 		while(current!=NULL){
 			parent = current;
-			if (key > current->getKey())
+			if (key > current->getKey()){
 				current = current->getRightChild();
-			else
+			}else{
 				current = current->getLeftChild();
+			}
 		}
 		
 		node* uncle = getUncle(parent->getKey());
@@ -82,7 +89,7 @@ void tree::insert(int key){
 		if (pColor == 'b'){
 			
 			/* DONT TO ANYTHING */
-			//insert_case2(key);
+			insert_case2(parent, key);
 		}
 
    		/* CASE 3: PARENT AND UNCLE ARE RED. */
@@ -101,7 +108,7 @@ void tree::insert(int key){
 			/* 
 			STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
         	DO: ROTACIONE O INSERIDO E O PAI.
-      		STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+      STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
 			*/
 			
 			//insert_case4(key);
@@ -118,6 +125,14 @@ void tree::insert(int key){
 
 
 
+}
+
+void tree::switchColor(node *p){
+	if(p->getColor() == 'r'){
+		p->color = 'b';
+	}else{
+		p->color = 'r';
+	}
 }
 
 void tree::goThrough(){
@@ -152,11 +167,15 @@ void tree::printTree(){
             {
             node* temp = pilhaGlobal.top();
             pilhaGlobal.pop();
-            if(temp != NULL)
-               {
-               cout << temp->getKey();
-               pilhaLocal.push(temp->leftChild);
-               pilhaLocal.push(temp->rightChild);
+            if(temp != NULL){
+            	if (temp->getColor() == 'r'){
+            		cout << '['<< temp->getKey() << ']';	
+							}else{
+								cout << '('<< temp->getKey() << ')';
+							}
+              
+              pilhaLocal.push(temp->leftChild);
+              pilhaLocal.push(temp->rightChild);
 
                if(temp->leftChild != NULL || temp->rightChild != NULL)
                   linhaVazia = false;
@@ -216,6 +235,9 @@ node* tree::search(int key, node*& previous, char &direction){
 node* tree::getUncle(int key){
 	// KEY = PARENT->KEY.
 	node* currentP = root;
+	if(currentP->getLeftChild()==NULL && currentP->getRightChild()==NULL){
+		return NULL;
+	}
 	while(currentP != NULL){
 		if (currentP->leftChild->getKey() == key){
 			return currentP->getRightChild();
@@ -254,3 +276,14 @@ node* tree::getGrampa(int key){
 	}
 	return currentP;
 }
+
+void tree::insert_case2(node* parent, int key){
+	node* newNode = new node(key);
+	if (key > parent->getKey()){
+		parent->setRightChild(parent);
+	}else{
+		parent->setLeftChild(parent);
+	}
+}
+
+

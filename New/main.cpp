@@ -2,15 +2,22 @@
 #include "tree.h"
 using namespace std;
 
-int main()
-{
-   int valor, flag = 0;
-   char opcao;
-   node* achado;
-   tree arv;                              
-
-   for(;;)                   
-      {                                   
+int main(){
+  int valor, flag = 0;
+  char opcao;
+  node* achado;
+  tree arv;                              
+			
+	cout << "legend" << endl;
+	cout << "[X] = X is Red" << endl;
+	cout << "(X) = X is Black" << endl;		
+			
+	arv.insert(3);
+	arv.insert(4);
+	arv.printTree();	
+		
+		/*
+   	for(;;){                                   
       cout << "\nEscolha uma opcao:\n";
       cout << "1 - Mostrar\n";
       cout << "2 - Inserir\n";
@@ -20,8 +27,7 @@ int main()
       cout << "6 - Sair\n";
       cin >> opcao;
 
-      switch(opcao)
-         {
+      switch(opcao){
          case '1':                        
             //arv.mostrararvore();
             break;
@@ -49,12 +55,12 @@ int main()
          case '5':                        
             cout << "Entre com o valor: ";
             cin >> valor;
-            /*
+        
             if(arv.remover(valor))
                cout << "Removido " << valor << "." << endl;
             else
                cout << "Nao achado " << valor << "." << endl;
-            */
+            
             break;
 
          case '6': 
@@ -65,7 +71,8 @@ int main()
             break;
          }  
       if(flag == 1) break;
-      }  
+      }
+		*/
    return 0;
 }  
 

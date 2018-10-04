@@ -4,7 +4,6 @@ class node{
 	public: 
 		int key;
 		char color;
-
 		node* leftChild; // Pointer to left child.	
 		node* rightChild; // Pointer to the right child.
 

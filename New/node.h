@@ -1,20 +1,16 @@
 using namespace std;
 
 class node{
-	public: 
+	private: 
 		int key;
 		char color;
 		node* leftChild; // Pointer to left child.	
 		node* rightChild; // Pointer to the right child.
 
+	public:
 		node(); 	// Constructor
-
 		node(int k);
-
 		~node(); 	// Destructor
-
-
-
 		void printNode(); // Function to print node's content.
 		int getKey(); // Function to return the content of a node.
 		char getColor(); // Function to return the color of a node.

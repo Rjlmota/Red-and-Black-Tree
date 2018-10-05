@@ -18,7 +18,7 @@ class tree {
 
 		
 		node* getParent(int key); // Function used to get the node's parent.
-		node* getUncle(int key); // Function used to get the node uncle.
+		node* getUncle(node* parent); // Function used to get the node uncle.
 		node* getGrampa(int key); // Function used to get the node grampa.
 		void eraseData(node *localRoot); // Function used by destructor.
 		node* search(int key); // Function to search for node.
@@ -30,8 +30,9 @@ class tree {
 		void printTree(); // Function to print tree.
 		void insert_case1(node* parent, int key); //bla
 		void insert_case2(node* parent, int key); // Function to add a node for case 2.
+		void insert_case3(node*parent, node* uncle, int key);
 		void switchColor(node* p); // Function to switch color
-
+		//SWITCHCOLOR não deveria estar aqui, deve estar no node.h	!!!!
 
 
 };
@@ -85,11 +86,28 @@ void tree::insert(int key){
 			}
 		}
 		
-		//node* uncle = getUncle(parent->getKey());
-		char pColor = parent->getColor();
-		//char uColor = uncle->getColor();
 
+		//UNCLE
+		node* grampa = getParent(parent->key);
 		
+		node* uncle = NULL;
+		/*
+		if(grampa->getLeftChild() != NULL) 
+			if(grampa->getLeftChild()->key == parent->key)
+				uncle = grampa->getRightChild();
+
+			else{
+				if(grampa->getRightChild() != NULL)
+					uncle = grampa->getRightChild();
+			}
+		*/
+		uncle = getUncle(parent);
+		char pColor = parent->getColor();
+		char uColor = '.';
+
+		if(uncle != NULL){
+			uColor = uncle->getColor();
+		}
 	   	/* CASE 2: NODE'S PARENT IS BLACK */
 		if (pColor == 'b'){
 			
@@ -98,14 +116,14 @@ void tree::insert(int key){
 		}
 
    		/* CASE 3: PARENT AND UNCLE ARE RED. */
-		//else if ((pColor == 'r')&&(uColor == 'r')){
+		else if ((pColor == 'r')&&(uColor == 'r')){
 		
 			/* 
 			DO: CHANGE PARENT AND UNCLE TO BLACK.
         	CHANGE GRANDFATHER TO RED. 
 			*/
-			//insert_case3(key);
-		//}
+			insert_case3(parent, uncle, key);
+		}
 		
 		/* CASE 4: FATHER IS RED AND UNCLE IS BLACK. */
 		//else if((pColor == 'r')&&(uColor == 'b')){
@@ -123,6 +141,8 @@ void tree::insert(int key){
 		/* ERRO! */
 		else{
 			
+			cout << pColor << endl;
+			cout << uColor << endl;
 			cout << "ERRO 404: CASE NOT FOUND!\n" ; 
 			
 		}
@@ -238,56 +258,32 @@ node* tree::search(int key, node*& previous, char &direction){
    return 0;
 }
 
-node* tree::getUncle(int key){
-	// KEY = PARENT->KEY.
-	node* currentP = root;
-	if(currentP->getLeftChild()==NULL && currentP->getRightChild()==NULL){
-		return NULL;
-	}
-	while(currentP != NULL){
-		if (currentP->leftChild->getKey() == key){
-			return currentP->getRightChild();
-		}
-		else if (currentP->rightChild->getKey()== key){
-			return currentP->getLeftChild();
-		}
-		else{
-			if (key > currentP->getKey()){
-				currentP = currentP->getRightChild();
-			}else{
-				currentP = currentP->getLeftChild();
-			}
+node* tree::getUncle(node* parent){
+
+
+	node* grampa = getParent(parent->getKey());
+	
+	
+	node* uncle = NULL;
+	if(grampa != NULL){
+		if(grampa->getLeftChild() != NULL and grampa->getRightChild() != NULL){
+			if(grampa->getLeftChild()->key == parent->getKey())
+				uncle = grampa->getRightChild();
+			else
+				uncle = grampa->getLeftChild();
 		}
 	}
-	return currentP;
+	return uncle;
 }
 
 node* tree::getGrampa(int key){
-	// KEY = PARENT->KEY.
-	/*
-	node* currentP = root;
-	while(currentP != NULL){
-		if (currentP->getLeftChild()->getKey() == key){
-			return currentP;
-		}
-		else if (currentP->getRightChild()->getKey()== key){
-			return currentP;
-		}
-		else{
-			if (key > currentP->getKey()){
-				currentP = currentP->getRightChild();
-			}else{
-				currentP = currentP->getLeftChild();
-			}
-		}
-	}
-	return currentP;
-	*/
-	cout << "alo" <<endl;
 	node* grampa = NULL;
 	node* parent = getParent(key);
-	grampa = getParent(parent->key);
+	if(parent != NULL)
+		grampa = getParent(parent->key);
+	
 	return grampa;
+
 }
 
 
@@ -309,8 +305,6 @@ node* tree::getParent(int key){
 			else if(key < p->key)
 				p = p->getLeftChild();
 
-
-
 		}
 
 	}
@@ -326,4 +320,18 @@ void tree::insert_case2(node* parent, int key){
 	}
 }
 
+void tree::insert_case3(node *parent, node* uncle, int key){
+		/* 
+		DO: CHANGE PARENT AND UNCLE TO BLACK.
+        CHANGE GRANDFATHER TO RED. 
+		*/
+		uncle->setColor('b');
+		parent->setColor('b');
+		node* grampa = getParent(parent->key);
+		if(grampa != root){
+			grampa->setColor('r');
+		}
+		insert_case2(parent, key);
+
+}
 

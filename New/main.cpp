@@ -16,7 +16,6 @@ int main(){
 	arv.insert(4);
   arv.insert(1);
   arv.insert(5);
-  cout << "GrampaKey: " << arv.getGrampa(4) <<endl;
 
 	arv.printTree();	
 		

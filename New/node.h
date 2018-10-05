@@ -22,7 +22,7 @@ class node{
 		node* getRightChild(); // Function to return a pointer to the right child.
 		void setRightChild(node* p); // Function to set a value for the right child.
 		void setLeftChild(node* p); // Function to set a value for the left child.
-
+		void setColor(char c); // Function to set color
 	};
 
 node::node(){
@@ -52,6 +52,11 @@ int node::getKey(){
 char node::getColor(){
 	return color;
 }
+
+void node::setColor(char c){
+	color = c;
+}
+
 
 node* node::getLeftChild(){
 	return leftChild;

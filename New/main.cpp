@@ -12,13 +12,21 @@ int main(){
 	cout << "[X] = X is Red" << endl;
 	cout << "(X) = X is Black" << endl;		
 			
-	arv.insert(3);
-	arv.insert(4);
-  arv.insert(1);
+	arv.insert(10);
+	arv.insert(15);
   arv.insert(5);
+  arv.insert(18);
+  arv.insert(1);
+  arv.insert(3);
+  arv.insert(4);
 
 	arv.printTree();	
-		
+
+  //node *toRotate = arv.search(5);
+
+	//arv.leftRotation(&toRotate);
+  arv.printTree();
+
 		/*
    	for(;;){                                   
       cout << "\nEscolha uma opcao:\n";

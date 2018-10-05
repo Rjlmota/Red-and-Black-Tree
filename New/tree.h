@@ -2,8 +2,9 @@
 #include "node.h"
 using namespace std;
 
-//FIX ME: GRAMPA FUNCTION !!!
-//FIX ME: UNCLE FUNCTION !!
+//FIXME LEFTROTATION
+//ADDME RIGHT ROTATION
+
 
 
 class tree {
@@ -33,6 +34,9 @@ class tree {
 		void insert_case3(node*parent, node* uncle, int key);
 		void switchColor(node* p); // Function to switch color
 		//SWITCHCOLOR não deveria estar aqui, deve estar no node.h	!!!!
+
+
+		void leftRotation(node **p);
 
 
 };
@@ -91,16 +95,7 @@ void tree::insert(int key){
 		node* grampa = getParent(parent->key);
 		
 		node* uncle = NULL;
-		/*
-		if(grampa->getLeftChild() != NULL) 
-			if(grampa->getLeftChild()->key == parent->key)
-				uncle = grampa->getRightChild();
 
-			else{
-				if(grampa->getRightChild() != NULL)
-					uncle = grampa->getRightChild();
-			}
-		*/
 		uncle = getUncle(parent);
 		char pColor = parent->getColor();
 		char uColor = '.';
@@ -151,6 +146,17 @@ void tree::insert(int key){
 
 
 
+}
+
+void tree::leftRotation(node **p0){
+  node *p1=NULL, *p2=NULL;
+  p1 = (*p0)->getRightChild();
+  p2 = p1->getLeftChild();
+  p1->setLeftChild(*p0);
+  (*p0)->setRightChild(p2);
+  //(*p0)->fb = 0;
+  //p1->fb = 0;
+  (*p0) = p1;
 }
 
 void tree::switchColor(node *p){

@@ -295,7 +295,7 @@ node* tree::getParent(int key){
 	node *currentN = root;
 	node *previousN = root;
 
-	/* Uma alternativa para getParent().
+	/* Uma alternativa para getParent(). Pode ser usada para achar o pai do node a ser inserido.
 
 	node *previousN = NULL;
 	if (currentN!=NULL){

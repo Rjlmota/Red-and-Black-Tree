@@ -12,19 +12,25 @@ int main(){
 	cout << "legend" << endl;
 	cout << "[X] = X is Red" << endl;
 	cout << "(X) = X is Black" << endl;		
-
+  int temp;
   
   int entrada = 0;
   while(true){
+    
+    cout << "30 50 20 10 15" << endl;
     cout << ">>";
+
     cin >> entrada;
     if(entrada == -1)
       return 0;
     arv.insert(entrada);
     achado = arv.search(entrada);
-    cin >>;
     cout << achado->getKey() << endl;
-    //arv.printTree();
+
+    //Habilite esse cin pra evitar o loop infinito
+    //cin >> temp;
+    
+    arv.printTree();
     }
   
   /*

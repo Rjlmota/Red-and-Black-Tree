@@ -12,6 +12,7 @@ int main(){
 	cout << "[X] = X is Red" << endl;
 	cout << "(X) = X is Black" << endl;		
 	
+  /*
   // Testes Caso 1, 2 e 3.
   arv.insert(10);
     cout << "so far so good\n";
@@ -26,23 +27,25 @@ int main(){
 
   arv.insert(20);
   arv.printTree();  
-
-  /*
+  */
+  
 	arv.insert(10);
 	arv.insert(15);
-  arv.insert(5);
-  arv.insert(18);
-  arv.insert(1);
-  arv.insert(3);
-  arv.insert(4);
+  arv.insert(8);
+  arv.insert(9);
+  arv.insert(14);
+  //arv.insert(10);
+  //arv.insert(3);
+  //arv.insert(4);
 
 	arv.printTree();	
 
-  //node *toRotate = arv.search(5);
+  node *parent = arv.search(10);
 
-	//arv.leftRotation(&toRotate);
+	arv.leftRotation(&parent);
+  arv.rightRotation(&parent);
   arv.printTree();
-  */
+
 		/*
    	for(;;){                                   
       cout << "\nEscolha uma opcao:\n";

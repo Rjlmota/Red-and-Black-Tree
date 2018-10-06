@@ -37,6 +37,7 @@ class tree {
 
 
 		void leftRotation(node **p);
+		void rightRotation(node **p);
 
 
 };
@@ -144,16 +145,26 @@ void tree::insert(int key){
 
 }
 
-void tree::leftRotation(node **p0){
-  node *p1=NULL, *p2=NULL;
-  p1 = (*p0)->getRightChild();
-  p2 = p1->getLeftChild();
-  p1->setLeftChild(*p0);
-  (*p0)->setRightChild(p2);
-  //(*p0)->fb = 0;
-  //p1->fb = 0;
-  (*p0) = p1;
+void tree::leftRotation(node **parent){
+	node* pivot = (*parent)->getLeftChild();
+	node* temp = pivot->getRightChild();
+
+	pivot->setRightChild(temp->getLeftChild());
+	temp->setLeftChild(pivot);
+
+	(*parent)->setLeftChild(temp);
 }
+
+void tree::rightRotation(node **parent){
+	node* pivot = (*parent)->getRightChild();
+	node* temp = pivot->getLeftChild();
+
+	pivot->setLeftChild(temp->getRightChild());
+	temp->setRightChild(pivot);
+
+	(*parent)->setRightChild(temp);
+}
+
 
 void tree::switchColor(node *currentN){
 	if(currentN->getColor() == 'r'){

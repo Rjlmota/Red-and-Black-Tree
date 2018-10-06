@@ -70,7 +70,7 @@ node* tree::search(int key){
 
 
 void tree::leftRotation(node **p0){
-	cout << "rotation on " << (*p0)->getKey() << endl;
+	cout << "left rotation on " << (*p0)->getKey() << endl;
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getRightChild();
@@ -80,7 +80,12 @@ void tree::leftRotation(node **p0){
 	//(*p0) = p1;
 
 	if(parent != NULL){
-		parent->setRightChild(p1);
+		if(parent->getLeftChild() == (*p0)){
+		parent->setLeftChild(p1);
+		}
+		else if(parent->getRightChild() == (*p0)){
+			parent->setRightChild(p1);
+		}
 	}else{
 		root = p1;
 	}
@@ -88,7 +93,7 @@ void tree::leftRotation(node **p0){
 }
 
 void tree::rightRotation(node **p0){
-	cout << "rotation on " << (*p0)->getKey() << endl;
+	cout << "right rotation on " << (*p0)->getKey() << endl;
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getLeftChild();
@@ -99,11 +104,15 @@ void tree::rightRotation(node **p0){
 
 
 	if(parent != NULL){
+		if(parent->getLeftChild() == (*p0)){
 		parent->setLeftChild(p1);
+		}
+		else if(parent->getRightChild() == (*p0)){
+			parent->setRightChild(p1);
+		}
 	}else{
 		root = p1;
 	}
-
 }
 
 
@@ -293,27 +302,46 @@ void tree::balance(node* currentN){
 				       	DO: ROTACIONE O INSERIDO E O PAI.
 		
 					*/
+					
+					node *temp = NULL;
+					int flag = 0;
 					cout << "case 4 " << endl;
 
+					cout << "parent rotation" << endl;
 					if(grampaN->getRightChild() == parentN){
 						if(currentN == parentN->getLeftChild()){
 							rightRotation(&parentN);
+							flag = 1;
 						}
 					}
 					else if(grampaN->getLeftChild() == parentN){
 						if(currentN == parentN->getRightChild()){
 							leftRotation(&parentN); 
+							flag = 1;
 						}
 					}
 
+					if(flag == 0){
+						temp = parentN;
+						parentN = currentN;
+						currentN = temp;
+					}
+
+
+
 				    //STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+					cout << "grandparent rotation " << endl;
 					switchColor(grampaN);
-					switchColor(parentN);
-					if(grampaN->getLeftChild() == parentN){
+					//switchColor(parentN);
+					cout <<"gp " << grampaN->getKey() << endl;
+					cout << "p" <<parentN->getKey() << endl;
+					if(grampaN->getLeftChild() == currentN){
 						rightRotation(&grampaN);
-					}else if(grampaN->getRightChild() == parentN){
+					}else if(grampaN->getRightChild() == currentN){
 						leftRotation(&grampaN);
 					}
+
+					switchColor(currentN);
 
 				}
 			}		

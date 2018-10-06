@@ -51,20 +51,32 @@ tree::~tree(){
 void tree::eraseData(node* localRoot){
 	//Adapt to RBT.
 }
-/*
+
+
+
 node* tree::search(int key){
 	node* currentN = root;
 	while(currentN->getKey() != key){
 		if(key < currentN->getKey())
-			currentN = currentN->leftChild;
+			currentN = currentN->getLeftChild();
 		else
-			currentN = currentN->rightChild;
+			currentN = currentN->getRightChild();
 		if(currentN == NULL)
 			return NULL;
 	}
 	return currentN;
 }
-*/
+
+
+void tree::leftRotation(node **parent){
+	node* pivot = (*parent)->getLeftChild();
+	node* temp = pivot->getRightChild();
+
+	pivot->setRightChild(temp->getLeftChild());
+	temp->setLeftChild(pivot);
+
+	(*parent)->setLeftChild(temp);
+}
 
 void tree::rightRotation(node **parent){
 	node* pivot = (*parent)->getRightChild();

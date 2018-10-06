@@ -70,16 +70,17 @@ node* tree::search(int key){
 
 
 void tree::leftRotation(node **p0){
+	cout << "rotation on " << (*p0)->getKey() << endl;
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getRightChild();
 	p2 = p1->getLeftChild();
 	p1->setLeftChild(*p0);
 	(*p0)->setRightChild(p2);
-	(*p0) = p1;
+	//(*p0) = p1;
 
 	if(parent != NULL){
-		parent->setRightChild(*p0);
+		parent->setRightChild(p1);
 	}else{
 		root = p1;
 	}

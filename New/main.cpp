@@ -21,7 +21,10 @@ int main(){
     if(entrada == -1)
       return 0;
     arv.insert(entrada);
-    arv.printTree();
+    achado = arv.search(entrada);
+    cin >>;
+    cout << achado->getKey() << endl;
+    //arv.printTree();
     }
   
   /*

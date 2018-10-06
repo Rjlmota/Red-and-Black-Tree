@@ -34,6 +34,7 @@ class tree {
 
 
 		void leftRotation(node **p);
+		void rightRotation(node **p);
 
 
 };
@@ -64,6 +65,17 @@ node* tree::search(int key){
 	return currentN;
 }
 */
+
+void tree::rightRotation(node **parent){
+	node* pivot = (*parent)->getRightChild();
+	node* temp = pivot->getLeftChild();
+
+	pivot->setLeftChild(temp->getRightChild());
+	temp->setRightChild(pivot);
+
+	(*parent)->setRightChild(temp);
+}
+
 
 void tree::switchColor(node *currentN){
 	if(currentN->getColor() == 'r'){

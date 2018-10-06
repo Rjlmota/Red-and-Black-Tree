@@ -307,7 +307,6 @@ void tree::balance(node* currentN){
 					int flag = 0;
 					cout << "case 4 " << endl;
 
-					cout << "parent rotation" << endl;
 					if(grampaN->getRightChild() == parentN){
 						if(currentN == parentN->getLeftChild()){
 							rightRotation(&parentN);
@@ -330,11 +329,8 @@ void tree::balance(node* currentN){
 
 
 				    //STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
-					cout << "grandparent rotation " << endl;
 					switchColor(grampaN);
 					//switchColor(parentN);
-					cout <<"gp " << grampaN->getKey() << endl;
-					cout << "p" <<parentN->getKey() << endl;
 					if(grampaN->getLeftChild() == currentN){
 						rightRotation(&grampaN);
 					}else if(grampaN->getRightChild() == currentN){

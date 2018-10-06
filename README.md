@@ -15,3 +15,5 @@ Correção da função tree::getParent(), tree::getGrampa(), tree::getUncle().
 Mudança da função tree::insert(). 
 Criação da função tree::balance(). \n 
 Organização geral do código.
+
+//teste

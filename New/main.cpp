@@ -11,7 +11,23 @@ int main(){
 	cout << "legend" << endl;
 	cout << "[X] = X is Red" << endl;
 	cout << "(X) = X is Black" << endl;		
-			
+	
+  // Testes Caso 1, 2 e 3.
+  arv.insert(10);
+    cout << "so far so good\n";
+  arv.printTree();
+
+  arv.insert(15);
+
+  arv.printTree();
+
+  arv.insert(5);
+  arv.printTree();
+
+  arv.insert(20);
+  arv.printTree();  
+
+  /*
 	arv.insert(10);
 	arv.insert(15);
   arv.insert(5);
@@ -26,7 +42,7 @@ int main(){
 
 	//arv.leftRotation(&toRotate);
   arv.printTree();
-
+  */
 		/*
    	for(;;){                                   
       cout << "\nEscolha uma opcao:\n";

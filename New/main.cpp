@@ -1,5 +1,6 @@
 #include <iostream>
 #include "tree.h"
+#include <unistd.h>
 using namespace std;
 
 int main(){
@@ -11,41 +12,42 @@ int main(){
 	cout << "legend" << endl;
 	cout << "[X] = X is Red" << endl;
 	cout << "(X) = X is Black" << endl;		
-	
-  /*
-  // Testes Caso 1, 2 e 3.
-  arv.insert(10);
-    cout << "so far so good\n";
-  arv.printTree();
 
-  arv.insert(15);
-
-  arv.printTree();
-
-  arv.insert(5);
-  arv.printTree();
-
-  arv.insert(20);
-  arv.printTree();  
-  */
   
-	arv.insert(10);
-	arv.insert(15);
-  arv.insert(8);
-  arv.insert(9);
-  arv.insert(14);
-  //arv.insert(10);
-  //arv.insert(3);
-  //arv.insert(4);
+  int entrada = 0;
+  while(true){
+    cout << ">>";
+    cin >> entrada;
+    if(entrada == -1)
+      return 0;
+    arv.insert(entrada);
+    arv.printTree();
+    }
+  
+  /*
 
-	arv.printTree();	
-
-  node *parent = arv.search(10);
-
-	arv.leftRotation(&parent);
-  arv.rightRotation(&parent);
-  arv.printTree();
-
+    arv.insert(30);
+    arv.insert(20);
+    arv.insert(50);
+    arv.printTree();
+    cout << "adding 10" << endl;
+    arv.insert(10);
+    arv.printTree();
+    cout << "adding 5" << endl;
+    arv.insert(5);
+    //arv.printTree();
+   */
+    /*
+    arv.printTree();
+    arv.insert(25);
+    arv.insert(45);
+    arv.insert(60);
+    arv.printTree();
+    arv.insert(5);
+    arv.insert(15);
+    usleep(1000);
+    arv.printTree();
+    */
 		/*
    	for(;;){                                   
       cout << "\nEscolha uma opcao:\n";

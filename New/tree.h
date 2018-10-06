@@ -35,7 +35,7 @@ class tree {
 
 		void leftRotation(node **p);
 		void rightRotation(node **p);
-
+		void newLeftRotation(node **p);
 
 };
 
@@ -68,24 +68,41 @@ node* tree::search(int key){
 }
 
 
-void tree::leftRotation(node **parent){
-	node* pivot = (*parent)->getLeftChild();
-	node* temp = pivot->getRightChild();
 
-	pivot->setRightChild(temp->getLeftChild());
-	temp->setLeftChild(pivot);
+void tree::leftRotation(node **p0){
+	node* parent = getParent((*p0)->getKey());
+	node *p1=NULL, *p2=NULL;
+	p1 = (*p0)->getRightChild();
+	p2 = p1->getLeftChild();
+	p1->setLeftChild(*p0);
+	(*p0)->setRightChild(p2);
+	(*p0) = p1;
 
-	(*parent)->setLeftChild(temp);
+	if(parent != NULL){
+		parent->setRightChild(*p0);
+	}else{
+		root = p1;
+	}
+
 }
 
-void tree::rightRotation(node **parent){
-	node* pivot = (*parent)->getRightChild();
-	node* temp = pivot->getLeftChild();
+void tree::rightRotation(node **p0){
+	cout << "rotation on " << (*p0)->getKey() << endl;
+	node* parent = getParent((*p0)->getKey());
+	node *p1=NULL, *p2=NULL;
+	p1 = (*p0)->getLeftChild();
+	p2 = p1->getRightChild();
+	p1->setRightChild(*p0);
+	(*p0)->setLeftChild(p2);
+	//(*p0) = p1;
 
-	pivot->setLeftChild(temp->getRightChild());
-	temp->setRightChild(pivot);
 
-	(*parent)->setRightChild(temp);
+	if(parent != NULL){
+		parent->setLeftChild(p1);
+	}else{
+		root = p1;
+	}
+
 }
 
 
@@ -232,11 +249,11 @@ void tree::insert(int key){
 		node* parentN = getParent(key);
 		if (key > parentN->getKey())
 			parentN->setRightChild(newN);
-		else
+		else{
 			parentN->setLeftChild(newN);
+		}
 	
 	}
-
 	balance(newN);
 
 }
@@ -248,7 +265,6 @@ void tree::balance(node* currentN){
 		node* parentN = getParent(currentN->getKey());
 		node* uncleN = getUncle(currentN->getKey());
 		node* grampaN = getGrampa(currentN->getKey());
-
 		/* CASE 1: NODE IS ROOT: */
 		if (parentN == NULL){
 
@@ -257,7 +273,6 @@ void tree::balance(node* currentN){
 		}else{
 			/* CASE 2: NODE'S PARENT IS BLACK */
 			/* DONT TO ANYTHING */
-
 			/* CASE 3: PARENT AND UNCLE ARE RED. */
 			if (parentN->getColor()=='r'){
 				if ((uncleN!=NULL) and (uncleN->getColor()=='r')){
@@ -265,25 +280,47 @@ void tree::balance(node* currentN){
 						CHANGE PARENT AND UNCLE TO BLACK.
 				        CHANGE GRANDFATHER TO RED. 
 					*/
-
+					cout << "case 3" << endl;
 					parentN->setColor('b');
 					uncleN->setColor('b');
 					grampaN->setColor('r');
-				}
-				/* CASE 4: PARENT IS RED AND UNCLE IS BLACK. */	
-				if ((uncleN==NULL) or (uncleN->getColor()=='b')){
+					
+				} else if ((uncleN==NULL) or (uncleN->getColor()=='b')){
+					/* CASE 4: PARENT IS RED AND UNCLE IS BLACK. */	
 					/* 
 						STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
 				       	DO: ROTACIONE O INSERIDO E O PAI.
-				    	STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+		
 					*/
+					cout << "case 4 " << endl;
+
+					if(grampaN->getRightChild() == parentN){
+						if(currentN == parentN->getLeftChild()){
+							rightRotation(&parentN);
+						}
+					}
+					else if(grampaN->getLeftChild() == parentN){
+						if(currentN == parentN->getRightChild()){
+							leftRotation(&parentN); 
+						}
+					}
+
+				    //STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+					switchColor(grampaN);
+					switchColor(parentN);
+					if(grampaN->getLeftChild() == parentN){
+						rightRotation(&grampaN);
+					}else if(grampaN->getRightChild() == parentN){
+						leftRotation(&grampaN);
+					}
+
 				}
 			}		
 		}
 		// TEM QUE FICAR DE OLHO NESSE CASO 4 
 		// PQ ACHO QUE VAI TER QUE MUDAR
 		// QUAL NODE É ENVIADO PRA RECURSIVIDADE.
-		balance(grampaN);
+		//balance(grampaN);
 
 	}		
 }

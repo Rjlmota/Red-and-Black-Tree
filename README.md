@@ -16,5 +16,6 @@ Mudança da função tree::insert().
 Criação da função tree::balance(). \n 
 Organização geral do código.
 
-// 06.10.2018 - Aparentemente a inserção tá toda coberta. Agora, precisamos fazer as remoções, quando tu puder, dá uma olhada e divide elas pra gente implementar. Vou dar uma estudada em Análise agora.
+// 06.10.2018 - Aparentemente a inserção tá toda coberta. Agora, precisamos fazer as remoções.
+Quando tu puder, dá uma olhada e divide elas pra gente implementar. Vou dar uma estudada em Análise agora.
 Como a gente tem até terça, dá pra fazer segunda a noite / terça de manhã tranquilo. Flwws

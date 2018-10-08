@@ -33,9 +33,8 @@ class tree {
 		//SWITCHCOLOR não deveria estar aqui, deve estar no node.h	!!!!
 
 
-		void leftRotation(node **p);
-		void rightRotation(node **p);
-		void newLeftRotation(node **p);
+		void leftRotation(node **p); // Function to do a left rotation on a tree.
+		void rightRotation(node **p); // Function to do a right rotation on a tree.
 
 };
 
@@ -52,8 +51,6 @@ void tree::eraseData(node* localRoot){
 	//Adapt to RBT.
 }
 
-
-
 node* tree::search(int key){
 	node* currentN = root;
 	while(currentN->getKey() != key){
@@ -67,17 +64,14 @@ node* tree::search(int key){
 	return currentN;
 }
 
-
-
 void tree::leftRotation(node **p0){
-	cout << "left rotation on " << (*p0)->getKey() << endl;
+	cout << "Left rotation on " << (*p0)->getKey() << endl;
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getRightChild();
 	p2 = p1->getLeftChild();
 	p1->setLeftChild(*p0);
 	(*p0)->setRightChild(p2);
-	//(*p0) = p1;
 
 	if(parent != NULL){
 		if(parent->getLeftChild() == (*p0)){
@@ -89,18 +83,16 @@ void tree::leftRotation(node **p0){
 	}else{
 		root = p1;
 	}
-
 }
 
 void tree::rightRotation(node **p0){
-	cout << "right rotation on " << (*p0)->getKey() << endl;
+	cout << "Right rotation on " << (*p0)->getKey() << endl;
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getLeftChild();
 	p2 = p1->getRightChild();
 	p1->setRightChild(*p0);
 	(*p0)->setLeftChild(p2);
-	//(*p0) = p1;
 
 
 	if(parent != NULL){
@@ -114,7 +106,6 @@ void tree::rightRotation(node **p0){
 		root = p1;
 	}
 }
-
 
 void tree::switchColor(node *currentN){
 	if(currentN->getColor() == 'r'){
@@ -264,7 +255,11 @@ void tree::insert(int key){
 		}
 	
 	}
+	cout << "Insert key: " << key << endl;
+	printTree();
+	cout << "Balancing tree." << endl;
 	balance(newN);
+	printTree();
 
 }
 
@@ -277,35 +272,40 @@ void tree::balance(node* currentN){
 		node* grampaN = getGrampa(currentN->getKey());
 		/* CASE 1: NODE IS ROOT: */
 		if (parentN == NULL){
-
+			cout << "Case 1." << endl;
 			/* NODE CHANGES TO BLACK */
 			currentN->setColor('b');
 		}else{
 			/* CASE 2: NODE'S PARENT IS BLACK */
-			/* DONT TO ANYTHING */
+			if (parentN->getColor()=='b'){
+				cout << "Case 2." << endl;
+				/* DONT TO ANYTHING */
+			}
 			/* CASE 3: PARENT AND UNCLE ARE RED. */
-			if (parentN->getColor()=='r'){
+			else if (parentN->getColor()=='r'){
 				if ((uncleN!=NULL) and (uncleN->getColor()=='r')){
 					/* 
 						CHANGE PARENT AND UNCLE TO BLACK.
 				        CHANGE GRANDFATHER TO RED. 
 					*/
-					cout << "case 3" << endl;
+					cout << "Case 3." << endl;
 					parentN->setColor('b');
 					uncleN->setColor('b');
 					grampaN->setColor('r');
+					balance(grampaN);
 					
 				} else if ((uncleN==NULL) or (uncleN->getColor()=='b')){
 					/* CASE 4: PARENT IS RED AND UNCLE IS BLACK. */	
 					/* 
-						STEP 1: SE O NO INSERIDO ESTIVER "DENTRO" DA SUBARVORE DO AVÔ:
-				       	DO: ROTACIONE O INSERIDO E O PAI.
+						STEP 1: IF THE INSERTED NODE IS INSIDE GRANDPARENT'S SUBTREE.
+				       	DO: ROTATE INSERTED AND PARENT.
 		
 					*/
-					
+					cout << "Case 4." << endl;
+					cout << "Step 1." << endl;
+
 					node *temp = NULL;
 					int flag = 0;
-					cout << "case 4 " << endl;
 
 					if(grampaN->getRightChild() == parentN){
 						if(currentN == parentN->getLeftChild()){
@@ -326,11 +326,9 @@ void tree::balance(node* currentN){
 						currentN = temp;
 					}
 
-
-
-				    //STEP 2: ROTACIONE O PAI E O AVO E AJUSTE AS CORES. 
+				    //STEP 2: ROTATE PARENT AND GRAMPARENT, AND CHANGE COLORS.
+				    cout << "Step 2." << endl;
 					switchColor(grampaN);
-					//switchColor(parentN);
 					if(grampaN->getLeftChild() == currentN){
 						rightRotation(&grampaN);
 					}else if(grampaN->getRightChild() == currentN){
@@ -342,14 +340,22 @@ void tree::balance(node* currentN){
 				}
 			}		
 		}
-		// TEM QUE FICAR DE OLHO NESSE CASO 4 
-		// PQ ACHO QUE VAI TER QUE MUDAR
-		// QUAL NODE É ENVIADO PRA RECURSIVIDADE.
-		//balance(grampaN);
-
 	}		
 }
 
 void tree::remove(int key){
    //Adapt to RBT.
+	// CASE 1: NODE WITH NON-LEAF CHILDREN.
+	// IF NODE IS RED, REMOVE AND DO NOTHING.
+
+	// CASES BELOW: ONE NON-LEAF CHILD.
+
+	// CASE 2: IF NODE AND SUCESSOR IS RED.
+	// CHANGE KEYS AND REMOVE SUCESSOR.
+
+	// CASE 3: IF NODE IS BLACK AND CHILD IS RED.
+	// REMOVE NODE AND CHANGE CHILD COLOR.
+
+	// CASES BELOW: NONE NON-LEAF CHILD.
+	// CASE 4: 
 }

@@ -8,10 +8,23 @@ int main(){
   char opcao;
   node* achado;
   tree arv;                              
-			
-	cout << "legend" << endl;
-	cout << "[X] = X is Red" << endl;
-	cout << "(X) = X is Black" << endl;		
+	
+  cout << "legend" << endl;
+  cout << "[X] = X is Red" << endl;
+  cout << "(X) = X is Black" << endl << endl; 
+
+  arv.insert(30);
+  //arv.printTree();
+  //arv.insert(35);
+  //arv.printTree();
+  arv.insert(25);
+  //arv.printTree();
+  arv.insert(27);
+  //arv.printTree();
+
+
+
+  /*	
   int temp;
   
   int entrada = 0;
@@ -28,11 +41,11 @@ int main(){
     cout << achado->getKey() << endl;
 
     //Habilite esse cin pra evitar o loop infinito
-    //cin >> temp;
+    cin >> temp;
     
     arv.printTree();
     }
-  
+  */
   /*
 
     arv.insert(30);

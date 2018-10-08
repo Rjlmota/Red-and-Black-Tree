@@ -35,8 +35,9 @@ class tree {
 
 		void leftRotation(node **p); // Function to do a left rotation on a tree.
 		void rightRotation(node **p); // Function to do a right rotation on a tree.
+		void del(node *p);
 
-};
+};	
 
 
 tree::tree(){
@@ -343,11 +344,29 @@ void tree::balance(node* currentN){
 	}		
 }
 
+void tree::del(node* p){
+	node *parent = getParent(p->getKey());
+
+	if(parent != NULL)
+		if(parent->getLeftChild() == p)
+			parent->setLeftChild(NULL);
+		else
+			parent->setRightChild(NULL);
+
+	p->~node();
+}
+
 void tree::remove(int key){
    //Adapt to RBT.
+	node* currentN = search(key);
 	// CASE 1: NODE WITH NON-LEAF CHILDREN.
+	if(!currentN->getLeftChild()->isLeaf() && !currentN->getRightChild()->isLeaf()){
 	// IF NODE IS RED, REMOVE AND DO NOTHING.
+		if(currentN->getColor() == 'r'){
+			del(currentN);
+		}
 
+	}
 	// CASES BELOW: ONE NON-LEAF CHILD.
 
 	// CASE 2: IF NODE AND SUCESSOR IS RED.

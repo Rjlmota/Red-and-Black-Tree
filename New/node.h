@@ -19,6 +19,7 @@ class node{
 		void setRightChild(node* p); // Function to set a value for the right child.
 		void setLeftChild(node* p); // Function to set a value for the left child.
 		void setColor(char c); // Function to set color
+		int isLeaf();
 	};
 
 node::node(){
@@ -68,4 +69,11 @@ void node::setRightChild(node *p){
 
 void node::setLeftChild(node *p){
 	leftChild = p;
+}
+
+int node::isLeaf(){
+	if((leftChild == NULL) && (rightChild == NULL))
+		return 1;
+	
+	return 0;
 }

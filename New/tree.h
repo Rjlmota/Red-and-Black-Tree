@@ -36,6 +36,7 @@ class tree {
 		void leftRotation(node **p); // Function to do a left rotation on a tree.
 		void rightRotation(node **p); // Function to do a right rotation on a tree.
 		void del(node *p);
+		node* tree::getSucessor(node* currentN); // Function to get a sucessor of a node.
 
 };	
 
@@ -170,32 +171,6 @@ void tree::printTree(){
       cout << endl;
 }  
 
-node* tree::search(int key, node*& previousN, char &direction){
-   node *currentN;
-   if(root){
-      currentN = root;
-      previousN = currentN;
-      while(currentN != NULL){
-         int currentNKey;
-         currentNKey = currentN->getKey();
-         if(currentNKey == key)
-            return currentN;
-
-         if(currentNKey < key){
-            previousN = currentN;
-            direction = 'r';
-            currentN = currentN->getRightChild();
-         }
-         else{
-            previousN=currentN;
-            direction='l';
-            currentN = currentN->getLeftChild();
-         }
-      }
-   }
-   return 0;
-}
-
 node* tree::getParent(int key){
 
 	node *currentN = root;
@@ -261,7 +236,6 @@ void tree::insert(int key){
 	cout << "Balancing tree." << endl;
 	balance(newN);
 	printTree();
-
 }
 
 void tree::balance(node* currentN){
@@ -344,37 +318,50 @@ void tree::balance(node* currentN){
 	}		
 }
 
-void tree::del(node* p){
-	node *parent = getParent(p->getKey());
+node* tree::getSucessor(node* currentN){
+	node* sucessorN = currentN->getRightChild();
+	if (sucessorN!=NULL){
+		while (sucessorN->getLeftChild()!=NULL)
+			sucessorN = sucessorN->getLeftChild();
+	}
+	return sucessorN;
+}
 
-	if(parent != NULL)
-		if(parent->getLeftChild() == p)
-			parent->setLeftChild(NULL);
+void tree::del(node* currentN){
+	node *parentN = getParent(currentN->getKey());
+
+	if(parentN != NULL)
+		if(parentN->getLeftChild() == currentN)
+			parentN->setLeftChild(NULL);
 		else
-			parent->setRightChild(NULL);
+			parentN->setRightChild(NULL);
 
-	p->~node();
+	if(!currentN->isLeaf()){
+
+	}
+
+	currentN->~node();
 }
 
 void tree::remove(int key){
    //Adapt to RBT.
 	node* currentN = search(key);
-	// CASE 1: NODE WITH NON-LEAF CHILDREN.
-	if(!currentN->getLeftChild()->isLeaf() && !currentN->getRightChild()->isLeaf()){
+	// CASE 1: NODE WITH NO CHILDREN.
+	if(currentN->isLeaf()){
 	// IF NODE IS RED, REMOVE AND DO NOTHING.
 		if(currentN->getColor() == 'r'){
 			del(currentN);
 		}
 
-	}
-	// CASES BELOW: ONE NON-LEAF CHILD.
+	}else{ // CASES BELOW: NODE WITH ONE CHILD.
+		// CASE 2: IF NODE AND SUCESSOR IS RED.
+		node* sucessorN = 
+		// CHANGE KEYS AND REMOVE SUCESSOR.
 
-	// CASE 2: IF NODE AND SUCESSOR IS RED.
-	// CHANGE KEYS AND REMOVE SUCESSOR.
+		// CASE 3: IF NODE IS BLACK AND CHILD IS RED.
+		// REMOVE NODE AND CHANGE CHILD COLOR.
 
-	// CASE 3: IF NODE IS BLACK AND CHILD IS RED.
-	// REMOVE NODE AND CHANGE CHILD COLOR.
-
-	// CASES BELOW: NONE NON-LEAF CHILD.
-	// CASE 4: 
+		// CASES BELOW: NONE NON-LEAF CHILD.
+		// CASE 4:
+	} 
 }

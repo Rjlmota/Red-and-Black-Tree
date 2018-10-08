@@ -21,7 +21,8 @@ int main(){
   //arv.printTree();
   arv.insert(27);
   //arv.printTree();
-
+  arv.remove(25);
+  arv.printTree();
 
 
   /*	

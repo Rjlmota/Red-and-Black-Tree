@@ -399,103 +399,56 @@ void tree::remove(int key){
 	//Standard BST Removal.
 	replace(currentN, sucessorN);
 	printTree();
-	int doubleblack = true;
-	
-
-
-	//Check if either removed ou replacer are red
-	if(currentN->getColor() == 'r' || sucessorN->getColor() == 'r')
-		sucessorN->setColor('b');
 
 	cout << currentN->getKey() << endl;
+	cout << sucessorN->getKey() << endl;
+
+	//Check if either removed ou replacer are red
+	if(currentN->getColor() == 'r' or sucessorN->getColor() == 'r')
+		sucessorN->setColor('b');
 
 	//v is deleted and u is replacer
 
-	if(currentN->getColor() == 'b' and sucessorN->getColor() == 'b'){
+	else if(currentN->getColor() =='b' and sucessorN->getColor()=='b'){
+		cout << "DoubleBlack condition.\n";
 		sucessorN->setColor('B'); //Double black
-
 	}
-
 	/*
-	while (doubleblack){
-		// IF CURRENTN IS ROOT.
-		if (currentN==root){
-			doubleblack = false;
-		}
-		// IF CURRENTN OR SUCESSORN IS RED.
-		else if ((currentN->getColor()=='r') or ((sucessorN->isNotNull()) and (sucessorN->getColor()=='r'))){			
-			//currentN->setColor('b');
-			//doubleblack = false;
-		}
-		// IF BOTH CURRENTN AND SUCESSORN ARE BLACK.
-		else{
+	while (sucessorN->getColor()=='B'){
+		
+		node* siblingN = getSibling(sucessorN->getKey());
+		node* parentN = getParent(sucessorN->getKey());
+		node* leftchildN = siblingN->getLeftChild();
+		node* righchildN = siblingN->getRightChild();
 
-			node* siblingN = getSibling(currentN->getKey());
-			node* parentN = getParent(currentN->getKey());
 
-			// IF SIBLINGN IS BLACK.
-			if (siblingN->getColor()=='b'){
-
-				node* leftchildN = siblingN->getLeftChild();
-				node* righchildN = siblingN->getRightChild();
+		if (siblingN->getColor()=='b'){
+			
+			if (leftchildN->getColor()=='r' or righchildN->getColor()=='r'){
 				
-				// BOTH CHILDREN ARE BLACK.
-				if ((leftchildN->isNull() or leftchildN->getColor()=='b') and (rightchildN->isNull() or righchildN->getColor()=='b')){
-					// switchCOlor(siblingN);
-					if (parentN->getColor()=='b'){
-						//RECUR TO PARENT.
-						//currentN = parentN;
-					}else{
-						//switchColor(parentN);
-						//doubleblack = false;
-					}
+				if (siblingN==parentN->getLeftChild() and leftchildN->getColor()=='r'){
+					rightRotation(&parentN);
+					sucessorN->setColor('b');
 				}
-				// AT LEAST ONE OF IT'S CHILDREN IS RED.
-				// RED IS LEFT CHILD OF SIBLINGN.
-				else if ((leftchildN!=NULL) and (leftchildN->getColor()=='r')){
-					// SIBLINGN IS LEFT CHILD OF PARENTN.
-					if (siblingN==parentN->getLeftChild()){
-						// LEFT ROTATION ON SIBLINGN.
-						//doubleblack = false;
-					}
-					// SIBLING IS RIGHT CHILD OF PARENTN.
-					if (siblingN==parentN->getRightChild()){
-						// DOUBLE LEFT ROTATION ON SIBLINGN.
-						//doubleblack = false;
-					}
-				// RED IS RIGHT CHILD OF SIBLINGN.
-				}else if ((righchildN!=NULL) and (righchildN->getColor()=='r')){
-					// SIBLINGN IS LEFT CHILD OF PARENTN.
-					if (siblingN == parentN->getLeftChild()){
-						// DOUBLE RIGHT ROTATION ON SIBLINGN.
-						//doubleblack = false;
-					}
-					// SIBLING IS RIGHT CHILD OF PARENTN.
-					if (siblingN -- parentN->getRightChild()){
-						// RIGHT ROTATION ON SIBLINGN.
-						//doubleblack = false;
-					}
+				else if (siblingN==parentN->getLeftChild() and righchildN->getColor()=='r'){
+					leftRotation(&siblingN);
+					rightRotation(&parentN);
+					sucessorN->setColor('b');
+				}
+				
+				if (siblingN==parentN->getRightChild() and righchildN->getColor()=='r'){
+					leftRotation(&parentN);
+					sucessorN->setColor('b');
+				}
+				else if (siblingN==parentN->getRightChild() and leftchildN->getColor()=='r'){
+					rightRotation(&siblingN);
+					leftRotation(&parentN);
+					sucessorN->setColor('b');
 				}
 			}
-			// IF SIBLINGN IS RED.
-			else if (siblingN->getColor()=='r'){
-				// SIBLINGN IS LEFT CHILD OF PARENT
-				if (siblingN==parentN->getLeftChild()){
-					// RIGHT ROTATION ON SIBLINGN.
-				}
-				// SIBLINGN IS RIGHT CHILD OF PARENT
-				else{
-					// LEFT ROTATION ON SIBLINGN.
-				}
-				//switchColor(siblingN);
-				//switchColor(parentN);
-				// AQUI A GENTE TA FERRADO, PQ ELE FAZ A CHECAGEM DE DOUBLEBLACK EM UM NULO. !!!
-				//currentN = sucessorN;
-			}
-		}
-	//sucessorN = getSucessor(currentN->getKey());
-	}
-	*/
+		} 
+	}*/
+
 }
 
 

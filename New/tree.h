@@ -20,7 +20,6 @@ class tree {
 		void printTree(); // Function to print tree.
 		void eraseData(node *localRoot); // Function used by destructor.
 		node* search(int key); // Function to search for node.
-		node* search(int key, node*& previousN, char &direction); // Used by removal method.
 		node* getParent(int key); // Function used to get the node's parent.
 		node* getGrampa(int key); // Function used to get the node grampa.
 		node* getUncle(int key); // Function used to get the node uncle.
@@ -28,17 +27,12 @@ class tree {
 		node* getSucessor(node* currentN); // Function to get a sucessor of a node.
 		void insert(int key); // Function to insert a node.
 		void balance(node* currentN); // Function to check the balance.
-
 		void remove(int key); // Function for removal of node.
-
 		void switchColor(node* currentN); // Function to switch color.
-		//SWITCHCOLOR não deveria estar aqui, deve estar no node.h	!!!!
-
-
 		void leftRotation(node **p); // Function to do a left rotation on a tree.
 		void rightRotation(node **p); // Function to do a right rotation on a tree.
-		void del(node *p);
-		void replace(node* currentN, node* sucessorN);
+		void del(node *p); // Function to delete a node.
+		void replace(node* currentN, node* sucessorN); // Function to replace a node with it's sucessor.
 
 };	
 
@@ -49,10 +43,6 @@ tree::tree(){
 
 tree::~tree(){
 	eraseData(root);
-}
-
-void tree::eraseData(node* localRoot){
-	//Adapt to RBT.
 }
 
 node* tree::search(int key){
@@ -336,8 +326,8 @@ void tree::balance(node* currentN){
 }
 
 void tree::del(node* currentN){
+	
 	node *parentN = getParent(currentN->getKey());
-
 	node *nChild = new node();
 
 	if(parentN!= NULL)
@@ -353,8 +343,8 @@ void tree::del(node* currentN){
 }
 
 void tree::replace(node* currentN, node* sucessorN){
+	
 	node* parentN = getParent(currentN->getKey());
-
 
 	if (sucessorN->isNull()){
 		sucessorN = new node();
@@ -382,30 +372,21 @@ void tree::remove(int key){
 	node* currentN = search(key);
 	node* sucessorN = getSucessor(currentN);
 	node* sublingN = getSibling(currentN->getKey());
-	cout << "current: " << currentN->getKey() << endl;
-	cout << "successor: " << sucessorN->getKey() << endl;
-	// ESSE REPLACE TEM QUE CONSEGUIR FUNCIONAR PRA NULL TBM.
-	// EU ACHO QUE A ORDEM DE QUANDO DAR REPLACE E REMOVE AINDA TÁ ERRADA.
 	
 	//Standard BST Removal.
 	replace(currentN, sucessorN);
 	printTree();
-
-	//cout << currentN->getKey() << endl;
-	//cout << sucessorN->getKey() << endl;
 
 	//Check if either removed ou replacer are red
 	if(currentN->getColor() == 'r' or sucessorN->getColor() == 'r')
 		sucessorN->setColor('b');
 
 	//v is deleted and u is replacer
-
 	else if(currentN->getColor() =='b' and sucessorN->getColor()=='b'){
 		cout << "DoubleBlack condition.\n";
 		sucessorN->setColor('B'); //Double black
 	}
 	while (sucessorN->getColor()=='B'){
-		cout << "loop\n";
 		
 		if (sucessorN == root){
 			sucessorN->setColor('b');

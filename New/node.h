@@ -8,8 +8,8 @@ class node{
 		node* rightChild; // Pointer to the right child.
 
 	public:
-		node(); 	// Constructor
-		node(int k);
+		node(); // Constructor
+		node(int k); // Constructor
 		~node(); 	// Destructor
 		void printNode(); // Function to print node's content.
 		int getKey(); // Function to return the content of a node.

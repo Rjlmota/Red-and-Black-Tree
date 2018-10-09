@@ -356,20 +356,26 @@ void tree::del(node* currentN){
 void tree::replace(node* currentN, node* sucessorN){
 	node* parentN = getParent(currentN->getKey());
 
+
+	if (sucessorN->isNull()){
+		sucessorN = new node();
+	}
+
 	if(currentN == parentN->getLeftChild())
 		parentN->setLeftChild(sucessorN);
 	else
 		parentN->setRightChild(sucessorN);
 
-	if(currentN->getLeftChild() != sucessorN)
-		sucessorN->setLeftChild(currentN->getLeftChild());
-	else sucessorN->setLeftChild(new node());
+	if(sucessorN->isNotNull()){
+		if(currentN->getLeftChild() != sucessorN)
+			sucessorN->setLeftChild(currentN->getLeftChild());
+		else sucessorN->setLeftChild(new node());
 
-	if(currentN->getRightChild() != sucessorN)
-		sucessorN->setRightChild(currentN->getRightChild());
-	else sucessorN->setRightChild(new node());
-
-	del(currentN);
+		if(currentN->getRightChild() != sucessorN)
+			sucessorN->setRightChild(currentN->getRightChild());
+		else sucessorN->setRightChild(new node());
+	}
+	currentN->~node();
 }
 
 void delete_one_child(node* currentN){

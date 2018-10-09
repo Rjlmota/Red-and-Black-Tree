@@ -25,7 +25,7 @@ class tree {
 		node* getGrampa(int key); // Function used to get the node grampa.
 		node* getUncle(int key); // Function used to get the node uncle.
 		node* getSibling(int key); // Function used to get the node sibling.
-		node* getSucessor(node* currentN); // Function to get a sucessor of a node.
+		//node* getSucessor(node* currentN); // Function to get a sucessor of a node.
 		void insert(int key); // Function to insert a node.
 		void balance(node* currentN); // Function to check the balance.
 
@@ -57,7 +57,7 @@ void tree::eraseData(node* localRoot){
 
 node* tree::search(int key){
 	node* currentN = root;
-	while((currentN!=NULL) and (currentN->getKey()!=key)){
+	while((currentN->isNotNull()) and (currentN->getKey()!=key)){
 
 		if(key < currentN->getKey())
 			currentN = currentN->getLeftChild();
@@ -78,7 +78,7 @@ void tree::leftRotation(node **p0){
 
 	if(parent != NULL){
 		if(parent->getLeftChild() == (*p0)){
-		parent->setLeftChild(p1);
+			parent->setLeftChild(p1);
 		}
 		else if(parent->getRightChild() == (*p0)){
 			parent->setRightChild(p1);
@@ -96,7 +96,6 @@ void tree::rightRotation(node **p0){
 	p2 = p1->getRightChild();
 	p1->setRightChild(*p0);
 	(*p0)->setLeftChild(p2);
-
 
 	if(parent != NULL){
 		if(parent->getLeftChild() == (*p0)){
@@ -138,7 +137,7 @@ void tree::printTree(){
             {
             node* temp = pilhaGlobal.top();
             pilhaGlobal.pop();
-            if(temp != NULL){
+            if(temp->isNotNull()){
             	if (temp->getColor() == 'r'){
             		cout << '['<< temp->getKey() << ']';	
 							}else{
@@ -148,14 +147,15 @@ void tree::printTree(){
               pilhaLocal.push(temp->getLeftChild());
               pilhaLocal.push(temp->getRightChild());
 
-               if(temp->getLeftChild() != NULL || temp->getRightChild() != NULL)
+               if(temp->getLeftChild()->isNotNull() || temp->getRightChild()->isNotNull())
                   linhaVazia = false;
                }
             else
                {
                cout << "--";
-               pilhaLocal.push(NULL);
-               pilhaLocal.push(NULL);
+               node *nullNode = new node();
+               pilhaLocal.push(nullNode);
+               pilhaLocal.push(nullNode);
                }
             for(int j=0; j<nVazios*2-2; j++)
                cout << ' ';
@@ -176,17 +176,13 @@ node* tree::getParent(int key){
 
 	node *currentN = root;
 	node *previousN = NULL;
-
-	while ((currentN!=NULL) and (currentN->getKey()!=key)){
-
+	while ((currentN->isNotNull()) and (currentN->getKey()!=key)){
 		previousN = currentN;
-
 		if(key > currentN->getKey())
 			currentN = currentN->getRightChild();
 		else if(key < currentN->getKey())
 			currentN = currentN->getLeftChild();
 	}
-
 	return previousN;
 }
 
@@ -204,7 +200,7 @@ node* tree::getUncle(int key){
 	node* grampaN = getGrampa(key);
 	node* parentN = getParent(key);
 
-	if (grampaN!=NULL){
+	if (grampaN != NULL){
 		if (grampaN->getRightChild() == parentN)
 			return grampaN->getLeftChild();
 		else
@@ -222,21 +218,22 @@ node* tree::getSibling(int key){
 		return parentN->getRightChild();
 }
 
+/*
 node* tree::getSucessor(int key){
 	node* currentN = search(key);
 	node* sucessorN = currentN->getLeftChild();
-	if (sucessorN!=NULL){
-		while (sucessorN->getRightChild()!=NULL)
+	if (sucessorN->isNotNull()){
+		while (sucessorN->getRightChild()->isNotNull())
 			sucessorN = sucessorN->getRightChild();
 	}
 	return sucessorN;
 }
-
+*/
 void tree::insert(int key){
    	
 	node *newN = new node(key);
 
-	if (root==NULL){
+	if (root == NULL){
 		
 		root = newN;
 	
@@ -258,12 +255,11 @@ void tree::insert(int key){
 }
 
 void tree::balance(node* currentN){
-
-	if (currentN != NULL){
-
+	if (currentN->isNotNull()){
 		node* parentN = getParent(currentN->getKey());
 		node* uncleN = getUncle(currentN->getKey());
 		node* grampaN = getGrampa(currentN->getKey());
+
 		/* CASE 1: NODE IS ROOT: */
 		if (parentN == NULL){
 			cout << "Case 1." << endl;
@@ -277,7 +273,7 @@ void tree::balance(node* currentN){
 			}
 			/* CASE 3: PARENT AND UNCLE ARE RED. */
 			else if (parentN->getColor()=='r'){
-				if ((uncleN!=NULL) and (uncleN->getColor()=='r')){
+				if ((uncleN->isNotNull()) and (uncleN->getColor()=='r')){
 					/* 
 						CHANGE PARENT AND UNCLE TO BLACK.
 				        CHANGE GRANDFATHER TO RED. 
@@ -288,7 +284,7 @@ void tree::balance(node* currentN){
 					grampaN->setColor('r');
 					balance(grampaN);
 					
-				} else if ((uncleN==NULL) or (uncleN->getColor()=='b')){
+				} else if ((uncleN->isNull()) or (uncleN->getColor()=='b')){
 					/* CASE 4: PARENT IS RED AND UNCLE IS BLACK. */	
 					/* 
 						STEP 1: IF THE INSERTED NODE IS INSIDE GRANDPARENT'S SUBTREE.
@@ -340,11 +336,13 @@ void tree::balance(node* currentN){
 void tree::del(node* currentN){
 	node *parentN = getParent(currentN->getKey());
 
-	if(parentN != NULL)
+	node *nChild = new node();
+
+	if(parentN!= NULL)
 		if(parentN->getLeftChild() == currentN)
-			parentN->setLeftChild(NULL);
+			parentN->setLeftChild(nChild);
 		else
-			parentN->setRightChild(NULL);
+			parentN->setRightChild(nChild);
 
 	if(!currentN->isLeaf()){
 
@@ -352,15 +350,37 @@ void tree::del(node* currentN){
 	currentN->~node();
 }
 
-void tree::replace(node** currentN, node** sucessorN){
+void tree::replace(node* currentN, node* sucessorN){
+	/*
+	node* parent = getParent(currentN->getKey());
+
+	if(currentN == parentN->getLeftChild())
+		parentN->setLeftChild(sucessorN);
+	else
+		parentN->setRightChild(sucessorN);
+		*/
 
 }
 
+void delete_one_child(node* currentN){
+	/*
+	node* child = isLeaf(currentN->getRightChild()) ? currentN->getLeftChild() : currentN->getRightChild();
+	replace_node(currentN, child);
+	if(currentN->getColor() == 'b'){
+		if(child->getColor() == 'r')
+			child->setColor('b');
+		else
+			//delete_case1(child);
+	}
+	currentN->~node();
+	*/
+}		
+
 void tree::remove(int key){
 	//Adapt to RBT
-	node* currentN = search(key);
-	node* sucessorN = getSucessor(currentN->getKey());
-
+	//node* currentN = search(key);
+	//node* sucessorN = getSucessor(currentN->getKey());
+	/*
 	// ESSE REPLACE TEM QUE CONSEGUIR FUNCIONAR PRA NULL TBM.
 	// EU ACHO QUE A ORDEM DE QUANDO DAR REPLACE E REMOVE AINDA TÁ ERRADA.
 	//replace(currentN, sucessorN);
@@ -374,7 +394,7 @@ void tree::remove(int key){
 			doubleblack = false;
 		}
 		// IF CURRENTN OR SUCESSORN IS RED.
-		else if ((currentN->getColor()=='r') or ((sucessorN!=NULL) and (sucessorN->getColor()=='r'))){			
+		else if ((currentN->getColor()=='r') or ((sucessorN->isNotNull()) and (sucessorN->getColor()=='r'))){			
 			//currentN->setColor('b');
 			//doubleblack = false;
 		}
@@ -391,7 +411,7 @@ void tree::remove(int key){
 				node* righchildN = siblingN->getRightChild();
 				
 				// BOTH CHILDREN ARE BLACK.
-				if ((leftchildN==NULL or leftchildN->getColor()=='b') and (rightchildN==NULL or righchildN->getColor()=='b')){
+				if ((leftchildN->isNull() or leftchildN->getColor()=='b') and (rightchildN->isNull() or righchildN->getColor()=='b')){
 					// switchCOlor(siblingN);
 					if (parentN->getColor()=='b'){
 						//RECUR TO PARENT.
@@ -446,4 +466,7 @@ void tree::remove(int key){
 		}
 	//sucessorN = getSucessor(currentN->getKey());
 	}
+	*/
 }
+
+

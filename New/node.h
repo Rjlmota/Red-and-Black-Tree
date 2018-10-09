@@ -20,20 +20,40 @@ class node{
 		void setLeftChild(node* p); // Function to set a value for the left child.
 		void setColor(char c); // Function to set color
 		int isLeaf();
+
+		int isNull();
+		int isNotNull();
+
 	};
 
+int node::isNull(){
+	if(key == -1)
+		return 1;
+	else
+		return 0;
+}
+
+int node::isNotNull(){
+	if(key != -1)
+		return 1;
+	else
+		return 0;
+}
+
+
 node::node(){
-	key=0;
-	color='r';
-	leftChild=NULL;
-	rightChild=NULL;
+	key=-1;
+	color='b';
+	leftChild = NULL;
+	rightChild = NULL;
+
 }
 
 node::node(int k){
 	key = k;
 	color='r';
-	leftChild=NULL;
-	rightChild=NULL;	
+	leftChild= new node();
+	rightChild= new node();	
 }
 
 node::~node(){}

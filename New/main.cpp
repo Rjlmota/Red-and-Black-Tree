@@ -16,19 +16,21 @@ int main(){
 
   arv.insert(100);
   //arv.printTree();
-  //arv.insert(35);
+
+  arv.insert(35);
+  //cout << "aaa" << endl;
   //arv.printTree();
   arv.insert(50);
-  //arv.printTree();
   arv.insert(75);
   //arv.printTree();
+  //cout << "oi2" << arv.search(100)->getLeftChild() << endl;
   arv.insert(60);
   //arv.printTree();
-  aux1 = arv.search(75);
-  aux2 = arv.getSucessor(aux1);
-  cout << aux2->getKey() << endl;
+  //aux1 = arv.search(75);
+  //aux2 = arv.getSucessor(aux1);
+  //cout << aux2->getKey() << endl;
 
-
+  //cout << arv.search(65)->getLeftChild()->getKey() << endl;
   /*	
   int temp;
   

@@ -6,23 +6,27 @@ using namespace std;
 int main(){
   int valor, flag = 0;
   char opcao;
-  node* achado;
+  node* aux1;
+  node* aux2;
   tree arv;                              
 	
   cout << "legend" << endl;
   cout << "[X] = X is Red" << endl;
   cout << "(X) = X is Black" << endl << endl; 
 
-  arv.insert(30);
+  arv.insert(100);
   //arv.printTree();
   //arv.insert(35);
   //arv.printTree();
-  arv.insert(25);
+  arv.insert(50);
   //arv.printTree();
-  arv.insert(27);
+  arv.insert(75);
   //arv.printTree();
-  arv.remove(25);
-  arv.printTree();
+  arv.insert(60);
+  //arv.printTree();
+  aux1 = arv.search(75);
+  aux2 = arv.getSucessor(aux1);
+  cout << aux2->getKey() << endl;
 
 
   /*	

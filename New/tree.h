@@ -24,6 +24,8 @@ class tree {
 		node* getParent(int key); // Function used to get the node's parent.
 		node* getGrampa(int key); // Function used to get the node grampa.
 		node* getUncle(int key); // Function used to get the node uncle.
+		node* getSibling(int key); // Function used to get the node sibling.
+		node* getSucessor(node* currentN); // Function to get a sucessor of a node.
 		void insert(int key); // Function to insert a node.
 		void balance(node* currentN); // Function to check the balance.
 
@@ -36,7 +38,7 @@ class tree {
 		void leftRotation(node **p); // Function to do a left rotation on a tree.
 		void rightRotation(node **p); // Function to do a right rotation on a tree.
 		void del(node *p);
-		node* tree::getSucessor(node* currentN); // Function to get a sucessor of a node.
+		void replace(node* currentN, node* sucessorN);
 
 };	
 
@@ -55,13 +57,12 @@ void tree::eraseData(node* localRoot){
 
 node* tree::search(int key){
 	node* currentN = root;
-	while(currentN->getKey() != key){
+	while((currentN!=NULL) and (currentN->getKey()!=key)){
+
 		if(key < currentN->getKey())
 			currentN = currentN->getLeftChild();
 		else
 			currentN = currentN->getRightChild();
-		if(currentN == NULL)
-			return NULL;
 	}
 	return currentN;
 }
@@ -197,7 +198,6 @@ node* tree::getGrampa(int key){
 		return getParent(parentN->getKey());
 
 	return NULL;
-
 }
 
 node* tree::getUncle(int key){
@@ -211,6 +211,25 @@ node* tree::getUncle(int key){
 			return grampaN->getRightChild();
 	}
 	return NULL;
+}
+
+node* tree::getSibling(int key){
+	node* parentN = getParent(key);
+
+	if (parentN->getRightChild()->getKey() == key)
+		return parentN->getLeftChild();
+	else
+		return parentN->getRightChild();
+}
+
+node* tree::getSucessor(int key){
+	node* currentN = search(key);
+	node* sucessorN = currentN->getLeftChild();
+	if (sucessorN!=NULL){
+		while (sucessorN->getRightChild()!=NULL)
+			sucessorN = sucessorN->getRightChild();
+	}
+	return sucessorN;
 }
 
 void tree::insert(int key){
@@ -318,15 +337,6 @@ void tree::balance(node* currentN){
 	}		
 }
 
-node* tree::getSucessor(node* currentN){
-	node* sucessorN = currentN->getRightChild();
-	if (sucessorN!=NULL){
-		while (sucessorN->getLeftChild()!=NULL)
-			sucessorN = sucessorN->getLeftChild();
-	}
-	return sucessorN;
-}
-
 void tree::del(node* currentN){
 	node *parentN = getParent(currentN->getKey());
 
@@ -339,29 +349,101 @@ void tree::del(node* currentN){
 	if(!currentN->isLeaf()){
 
 	}
-
 	currentN->~node();
 }
 
+void tree::replace(node** currentN, node** sucessorN){
+
+}
+
 void tree::remove(int key){
-   //Adapt to RBT.
+	//Adapt to RBT
 	node* currentN = search(key);
-	// CASE 1: NODE WITH NO CHILDREN.
-	if(currentN->isLeaf()){
-	// IF NODE IS RED, REMOVE AND DO NOTHING.
-		if(currentN->getColor() == 'r'){
-			del(currentN);
+	node* sucessorN = getSucessor(currentN->getKey());
+
+	// ESSE REPLACE TEM QUE CONSEGUIR FUNCIONAR PRA NULL TBM.
+	// EU ACHO QUE A ORDEM DE QUANDO DAR REPLACE E REMOVE AINDA TÁ ERRADA.
+	//replace(currentN, sucessorN);
+	//remove(sucessorN);
+	
+	int doubleblack = true;
+
+	while (doubleblack){
+		// IF CURRENTN IS ROOT.
+		if (currentN==root){
+			doubleblack = false;
 		}
+		// IF CURRENTN OR SUCESSORN IS RED.
+		else if ((currentN->getColor()=='r') or ((sucessorN!=NULL) and (sucessorN->getColor()=='r'))){			
+			//currentN->setColor('b');
+			//doubleblack = false;
+		}
+		// IF BOTH CURRENTN AND SUCESSORN ARE BLACK.
+		else{
 
-	}else{ // CASES BELOW: NODE WITH ONE CHILD.
-		// CASE 2: IF NODE AND SUCESSOR IS RED.
-		node* sucessorN = 
-		// CHANGE KEYS AND REMOVE SUCESSOR.
+			node* siblingN = getSibling(currentN->getKey());
+			node* parentN = getParent(currentN->getKey());
 
-		// CASE 3: IF NODE IS BLACK AND CHILD IS RED.
-		// REMOVE NODE AND CHANGE CHILD COLOR.
+			// IF SIBLINGN IS BLACK.
+			if (siblingN->getColor()=='b'){
 
-		// CASES BELOW: NONE NON-LEAF CHILD.
-		// CASE 4:
-	} 
+				node* leftchildN = siblingN->getLeftChild();
+				node* righchildN = siblingN->getRightChild();
+				
+				// BOTH CHILDREN ARE BLACK.
+				if ((leftchildN==NULL or leftchildN->getColor()=='b') and (rightchildN==NULL or righchildN->getColor()=='b')){
+					// switchCOlor(siblingN);
+					if (parentN->getColor()=='b'){
+						//RECUR TO PARENT.
+						//currentN = parentN;
+					}else{
+						//switchColor(parentN);
+						//doubleblack = false;
+					}
+				}
+				// AT LEAST ONE OF IT'S CHILDREN IS RED.
+				// RED IS LEFT CHILD OF SIBLINGN.
+				else if ((leftchildN!=NULL) and (leftchildN->getColor()=='r')){
+					// SIBLINGN IS LEFT CHILD OF PARENTN.
+					if (siblingN==parentN->getLeftChild()){
+						// LEFT ROTATION ON SIBLINGN.
+						//doubleblack = false;
+					}
+					// SIBLING IS RIGHT CHILD OF PARENTN.
+					if (siblingN==parentN->getRightChild()){
+						// DOUBLE LEFT ROTATION ON SIBLINGN.
+						//doubleblack = false;
+					}
+				// RED IS RIGHT CHILD OF SIBLINGN.
+				}else if ((righchildN!=NULL) and (righchildN->getColor()=='r')){
+					// SIBLINGN IS LEFT CHILD OF PARENTN.
+					if (siblingN == parentN->getLeftChild()){
+						// DOUBLE RIGHT ROTATION ON SIBLINGN.
+						//doubleblack = false;
+					}
+					// SIBLING IS RIGHT CHILD OF PARENTN.
+					if (siblingN -- parentN->getRightChild()){
+						// RIGHT ROTATION ON SIBLINGN.
+						//doubleblack = false;
+					}
+				}
+			}
+			// IF SIBLINGN IS RED.
+			else if (siblingN->getColor()=='r'){
+				// SIBLINGN IS LEFT CHILD OF PARENT
+				if (siblingN==parentN->getLeftChild()){
+					// RIGHT ROTATION ON SIBLINGN.
+				}
+				// SIBLINGN IS RIGHT CHILD OF PARENT
+				else{
+					// LEFT ROTATION ON SIBLINGN.
+				}
+				//switchColor(siblingN);
+				//switchColor(parentN);
+				// AQUI A GENTE TA FERRADO, PQ ELE FAZ A CHECAGEM DE DOUBLEBLACK EM UM NULO. !!!
+				//currentN = sucessorN;
+			}
+		}
+	//sucessorN = getSucessor(currentN->getKey());
+	}
 }

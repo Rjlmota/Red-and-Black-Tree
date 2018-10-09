@@ -68,7 +68,7 @@ node* tree::search(int key){
 }
 
 void tree::leftRotation(node **p0){
-	cout << "Left rotation on " << (*p0)->getKey() << endl;
+	cout << "Left rotation on " << (*p0)->getKey() << ".\n";
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getRightChild();
@@ -89,7 +89,7 @@ void tree::leftRotation(node **p0){
 }
 
 void tree::rightRotation(node **p0){
-	cout << "Right rotation on " << (*p0)->getKey() << endl;
+	cout << "Right rotation on " << (*p0)->getKey() << ".\n";
 	node* parent = getParent((*p0)->getKey());
 	node *p1=NULL, *p2=NULL;
 	p1 = (*p0)->getLeftChild();
@@ -219,7 +219,6 @@ node* tree::getSibling(int key){
 	else
 		return parentN->getRightChild();
 }
-
 
 node* tree::getSucessor(node* p){
 	int key = p->getKey();
@@ -376,21 +375,7 @@ void tree::replace(node* currentN, node* sucessorN){
 		else sucessorN->setRightChild(new node());
 	}
 	currentN->~node();
-}
-
-void delete_one_child(node* currentN){
-	/*
-	node* child = isLeaf(currentN->getRightChild()) ? currentN->getLeftChild() : currentN->getRightChild();
-	replace_node(currentN, child);
-	if(currentN->getColor() == 'b'){
-		if(child->getColor() == 'r')
-			child->setColor('b');
-		else
-			//delete_case1(child);
-	}
-	currentN->~node();
-	*/
-}		
+}	
 
 void tree::remove(int key){
 	//Adapt to RBT
@@ -406,8 +391,8 @@ void tree::remove(int key){
 	replace(currentN, sucessorN);
 	printTree();
 
-	cout << currentN->getKey() << endl;
-	cout << sucessorN->getKey() << endl;
+	//cout << currentN->getKey() << endl;
+	//cout << sucessorN->getKey() << endl;
 
 	//Check if either removed ou replacer are red
 	if(currentN->getColor() == 'r' or sucessorN->getColor() == 'r')
@@ -419,42 +404,68 @@ void tree::remove(int key){
 		cout << "DoubleBlack condition.\n";
 		sucessorN->setColor('B'); //Double black
 	}
-	/*
 	while (sucessorN->getColor()=='B'){
+		cout << "loop\n";
 		
-		node* siblingN = getSibling(sucessorN->getKey());
-		node* parentN = getParent(sucessorN->getKey());
-		node* leftchildN = siblingN->getLeftChild();
-		node* righchildN = siblingN->getRightChild();
-
-
-		if (siblingN->getColor()=='b'){
+		if (sucessorN == root){
+			sucessorN->setColor('b');
+		}
+		else{
 			
-			if (leftchildN->getColor()=='r' or righchildN->getColor()=='r'){
-				
-				if (siblingN==parentN->getLeftChild() and leftchildN->getColor()=='r'){
-					rightRotation(&parentN);
-					sucessorN->setColor('b');
-				}
-				else if (siblingN==parentN->getLeftChild() and righchildN->getColor()=='r'){
-					leftRotation(&siblingN);
-					rightRotation(&parentN);
-					sucessorN->setColor('b');
-				}
-				
-				if (siblingN==parentN->getRightChild() and righchildN->getColor()=='r'){
-					leftRotation(&parentN);
-					sucessorN->setColor('b');
-				}
-				else if (siblingN==parentN->getRightChild() and leftchildN->getColor()=='r'){
-					rightRotation(&siblingN);
-					leftRotation(&parentN);
-					sucessorN->setColor('b');
-				}
-			}
-		} 
-	}*/
+			node* siblingN = getSibling(sucessorN->getKey());
+			node* parentN = getParent(sucessorN->getKey());
+			node* leftchildN = siblingN->getLeftChild();
+			node* rightchildN = siblingN->getRightChild();
 
+			if (siblingN->getColor()=='b'){
+				
+				if (leftchildN->getColor()=='r' or rightchildN->getColor()=='r'){
+					
+					if (siblingN==parentN->getLeftChild() and leftchildN->getColor()=='r'){
+						rightRotation(&parentN);
+						switchColor(leftchildN);
+					}
+					else if (siblingN==parentN->getLeftChild() and rightchildN->getColor()=='r'){
+						leftRotation(&siblingN);
+						rightRotation(&parentN);
+						switchColor(rightchildN);
+					}
+					
+					if (siblingN==parentN->getRightChild() and rightchildN->getColor()=='r'){
+						leftRotation(&parentN);
+						switchColor(rightchildN);
+					}
+					else if (siblingN==parentN->getRightChild() and leftchildN->getColor()=='r'){
+						rightRotation(&siblingN);
+						leftRotation(&parentN);
+						switchColor(leftchildN);
+					}
+					sucessorN->setColor('b');
+				}
+				else if (leftchildN->getColor()=='b' and rightchildN->getColor()=='b'){
+					switchColor(siblingN);
+					if (parentN->getColor()=='r'){
+						switchColor(parentN);
+						sucessorN->setColor('b');
+					}else{
+						sucessorN = parentN;
+						sucessorN->setColor('B');
+					}
+				}
+			}else{
+				
+				if (siblingN==parentN->getLeftChild())
+					rightRotation(&parentN);
+				else
+					leftRotation(&parentN);	
+					
+				switchColor(siblingN);
+				switchColor(parentN);
+							
+			}
+		}
+	printTree();
+	}
 }
 
 

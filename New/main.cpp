@@ -14,19 +14,20 @@ int main(){
   cout << "[X] = X is Red" << endl;
   cout << "(X) = X is Black" << endl << endl; 
 
-  arv.insert(30);
+  arv.insert(20);
   //arv.printTree();
 
-  arv.insert(20);
+  arv.insert(10);
   //cout << "aaa" << endl;
   //arv.printTree();
-  arv.insert(40);
-  arv.insert(35);
+  arv.insert(30);
+  arv.insert(5);
   //arv.printTree();
   //cout << "oi2" << arv.search(100)->getLeftChild() << endl;
-  arv.insert(50);
-  arv.remove(20);
-  arv.remove(40);
+  //arv.insert(50);
+  arv.remove(5);
+  arv.remove(10);
+  //arv.remove(40);
   //arv.printTree();
   //arv.printTree();
   //aux1 = arv.search(75);

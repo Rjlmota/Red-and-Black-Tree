@@ -16,30 +16,14 @@ class node{
 		char getColor(); // Function to return the color of a node.
 		node* getLeftChild(); // Function to return a pointer to the left child.
 		node* getRightChild(); // Function to return a pointer to the right child.
+		void setColor(char c); // Function to set a color to a node.
 		void setRightChild(node* p); // Function to set a value for the right child.
 		void setLeftChild(node* p); // Function to set a value for the left child.
-		void setColor(char c); // Function to set color
-		int isLeaf();
-
-		int isNull();
-		int isNotNull();
+		int isLeaf(); // Function to check if a node is a leaf.
+		int isNull(); // Function to check if a node is NULL-leaf.
+		int isNotNull(); // Function to check if a node is not a NULL-leaf.
 
 	};
-
-int node::isNull(){
-	if(key == -1)
-		return 1;
-	else
-		return 0;
-}
-
-int node::isNotNull(){
-	if(key != -1)
-		return 1;
-	else
-		return 0;
-}
-
 
 node::node(){
 	key=-1;
@@ -70,17 +54,16 @@ char node::getColor(){
 	return color;
 }
 
-void node::setColor(char c){
-	color = c;
-}
-
-
 node* node::getLeftChild(){
 	return leftChild;
 }
 
 node* node::getRightChild(){
 	return rightChild;
+}
+
+void node::setColor(char c){
+	color = c;
 }
 
 void node::setRightChild(node *p){
@@ -93,7 +76,20 @@ void node::setLeftChild(node *p){
 
 int node::isLeaf(){
 	if((leftChild == NULL) && (rightChild == NULL))
-		return 1;
-	
+		return 1;	
 	return 0;
+}
+
+int node::isNull(){
+	if(key == -1)
+		return 1;
+	else
+		return 0;
+}
+
+int node::isNotNull(){
+	if(key != -1)
+		return 1;
+	else
+		return 0;
 }

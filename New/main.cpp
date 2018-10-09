@@ -25,6 +25,8 @@ int main(){
   //arv.printTree();
   //cout << "oi2" << arv.search(100)->getLeftChild() << endl;
   arv.insert(60);
+  arv.remove(75);
+  arv.printTree();
   //arv.printTree();
   //aux1 = arv.search(75);
   //aux2 = arv.getSucessor(aux1);

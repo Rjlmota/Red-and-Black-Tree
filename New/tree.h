@@ -25,7 +25,7 @@ class tree {
 		node* getGrampa(int key); // Function used to get the node grampa.
 		node* getUncle(int key); // Function used to get the node uncle.
 		node* getSibling(int key); // Function used to get the node sibling.
-		//node* getSucessor(node* currentN); // Function to get a sucessor of a node.
+		node* getSucessor(node* currentN); // Function to get a sucessor of a node.
 		void insert(int key); // Function to insert a node.
 		void balance(node* currentN); // Function to check the balance.
 
@@ -140,8 +140,10 @@ void tree::printTree(){
             if(temp->isNotNull()){
             	if (temp->getColor() == 'r'){
             		cout << '['<< temp->getKey() << ']';	
-							}else{
+							}else if(temp->getColor() == 'b'){
 								cout << '('<< temp->getKey() << ')';
+							}else{
+								cout<< "((" << temp->getKey() << "))";
 							}
               
               pilhaLocal.push(temp->getLeftChild());
@@ -218,8 +220,9 @@ node* tree::getSibling(int key){
 		return parentN->getRightChild();
 }
 
-/*
-node* tree::getSucessor(int key){
+
+node* tree::getSucessor(node* p){
+	int key = p->getKey();
 	node* currentN = search(key);
 	node* sucessorN = currentN->getLeftChild();
 	if (sucessorN->isNotNull()){
@@ -228,7 +231,7 @@ node* tree::getSucessor(int key){
 	}
 	return sucessorN;
 }
-*/
+
 void tree::insert(int key){
    	
 	node *newN = new node(key);
@@ -351,15 +354,22 @@ void tree::del(node* currentN){
 }
 
 void tree::replace(node* currentN, node* sucessorN){
-	/*
-	node* parent = getParent(currentN->getKey());
+	node* parentN = getParent(currentN->getKey());
 
 	if(currentN == parentN->getLeftChild())
 		parentN->setLeftChild(sucessorN);
 	else
 		parentN->setRightChild(sucessorN);
-		*/
 
+	if(currentN->getLeftChild() != sucessorN)
+		sucessorN->setLeftChild(currentN->getLeftChild());
+	else sucessorN->setLeftChild(new node());
+
+	if(currentN->getRightChild() != sucessorN)
+		sucessorN->setRightChild(currentN->getRightChild());
+	else sucessorN->setRightChild(new node());
+
+	del(currentN);
 }
 
 void delete_one_child(node* currentN){
@@ -378,16 +388,35 @@ void delete_one_child(node* currentN){
 
 void tree::remove(int key){
 	//Adapt to RBT
-	//node* currentN = search(key);
-	//node* sucessorN = getSucessor(currentN->getKey());
-	/*
+	node* currentN = search(key);
+	node* sucessorN = getSucessor(currentN);
+	node* sublingN = getSibling(currentN->getKey());
+	cout << "current: " << currentN->getKey() << endl;
+	cout << "successor: " << sucessorN->getKey() << endl;
 	// ESSE REPLACE TEM QUE CONSEGUIR FUNCIONAR PRA NULL TBM.
 	// EU ACHO QUE A ORDEM DE QUANDO DAR REPLACE E REMOVE AINDA TÁ ERRADA.
-	//replace(currentN, sucessorN);
-	//remove(sucessorN);
 	
+	//Standard BST Removal.
+	replace(currentN, sucessorN);
+	printTree();
 	int doubleblack = true;
+	
 
+
+	//Check if either removed ou replacer are red
+	if(currentN->getColor() == 'r' || sucessorN->getColor() == 'r')
+		sucessorN->setColor('b');
+
+	cout << currentN->getKey() << endl;
+
+	//v is deleted and u is replacer
+
+	if(currentN->getColor() == 'b' and sucessorN->getColor() == 'b'){
+		sucessorN->setColor('B'); //Double black
+
+	}
+
+	/*
 	while (doubleblack){
 		// IF CURRENTN IS ROOT.
 		if (currentN==root){

@@ -89,7 +89,12 @@ void tree::printTree(){
 					linhaVazia = false;
 			}
 			else{
-				cout << "(  )";
+				if (temp->getColor()=='B'){
+					cout << "(( ))";	
+				}else{
+					cout << "(  )";
+				}
+				
 				node *nullNode = new node();
 				pilhaLocal.push(nullNode);
 				pilhaLocal.push(nullNode);
@@ -228,10 +233,6 @@ void tree::replace(node* currentN, node* sucessorN){
 	
 	node* parentN = getParent(currentN->getKey());
 
-	if (sucessorN->isNull()){
-		sucessorN = new node();
-	}
-
 	if(currentN == parentN->getLeftChild())
 		parentN->setLeftChild(sucessorN);
 	else
@@ -362,8 +363,17 @@ void tree::remove(int key){
 	node* sucessorN = getSucessor(currentN->getKey());
 	node* sublingN = getSibling(currentN->getKey());
 	
+
+	cout << root->getLeftChild() << endl;
+	cout << currentN << endl;
+	cout << sucessorN << endl;
 	/* STEP 1: STANDARD BST REMOVAL */
 	replace(currentN, sucessorN);
+	cout << root->getLeftChild() << endl;
+	cout << currentN << endl;
+	cout << sucessorN << endl;
+	printTree();
+	cout << "Balancing tree.\n";
 
 	/* STEP 2: CHECK REMOVED AND SUCESSOR */
 	/* CASE 1: IF REMOVED OR SUCESSOR IS RED */
@@ -444,6 +454,7 @@ void tree::remove(int key){
 					}
 					/* IF PARENT IS BLACK, RECUR TO PARENT */
 					else{
+						sucessorN->setColor('b');
 						sucessorN = parentN;
 						sucessorN->setColor('B');
 					}

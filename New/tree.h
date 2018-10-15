@@ -363,15 +363,8 @@ void tree::remove(int key){
 	node* sucessorN = getSucessor(currentN->getKey());
 	node* sublingN = getSibling(currentN->getKey());
 	
-
-	cout << root->getLeftChild() << endl;
-	cout << currentN << endl;
-	cout << sucessorN << endl;
 	/* STEP 1: STANDARD BST REMOVAL */
 	replace(currentN, sucessorN);
-	cout << root->getLeftChild() << endl;
-	cout << currentN << endl;
-	cout << sucessorN << endl;
 	printTree();
 	cout << "Balancing tree.\n";
 

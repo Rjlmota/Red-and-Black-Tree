@@ -8,17 +8,22 @@ class node{
 		node* rightChild; // Pointer to the right child.
 
 	public:
-		node(); // Constructor
-		node(int k); // Constructor
-		~node(); 	// Destructor
+		node(); // Constructor of empty node.
+		node(int k); // Constructor of non-empty node.
+		~node(); 	// Destructor.
+
 		void printNode(); // Function to print node's content.
+
 		int getKey(); // Function to return the content of a node.
 		char getColor(); // Function to return the color of a node.
 		node* getLeftChild(); // Function to return a pointer to the left child.
 		node* getRightChild(); // Function to return a pointer to the right child.
+		
 		void setColor(char c); // Function to set a color to a node.
 		void setRightChild(node* p); // Function to set a value for the right child.
 		void setLeftChild(node* p); // Function to set a value for the left child.
+		void switchColor(); // Function to switch a color of a node.
+		
 		int isLeaf(); // Function to check if a node is a leaf.
 		int isNull(); // Function to check if a node is NULL-leaf.
 		int isNotNull(); // Function to check if a node is not a NULL-leaf.
@@ -30,7 +35,6 @@ node::node(){
 	color='b';
 	leftChild = NULL;
 	rightChild = NULL;
-
 }
 
 node::node(int k){
@@ -74,6 +78,13 @@ void node::setLeftChild(node *p){
 	leftChild = p;
 }
 
+void node::switchColor(){
+	if (color == 'r')
+		color = 'b';
+	else
+		color = 'r';
+}
+
 int node::isLeaf(){
 	if((leftChild == NULL) && (rightChild == NULL))
 		return 1;	
@@ -83,13 +94,11 @@ int node::isLeaf(){
 int node::isNull(){
 	if(key == -1)
 		return 1;
-	else
-		return 0;
+	return 0;
 }
 
 int node::isNotNull(){
 	if(key != -1)
 		return 1;
-	else
-		return 0;
+	return 0;
 }

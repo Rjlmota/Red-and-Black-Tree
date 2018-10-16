@@ -104,13 +104,17 @@ void tree::printTree(){
 node* tree::getParent(int key){
 
 	node *currentN = root;
-	node *previousN = NULL;
+	node *previousN = new node();
 	while ((currentN->isNotNull()) and (currentN->getKey()!=key)){
 		previousN = currentN;
 		if(key > currentN->getKey())
 			currentN = currentN->getRightChild();
 		else if(key < currentN->getKey())
 			currentN = currentN->getLeftChild();
+	}
+	if (previousN->isNull()){
+		previousN->setLeftChild(currentN);
+		previousN->setRightChild(new node());
 	}
 	return previousN;
 }
@@ -153,6 +157,8 @@ node* tree::getSucessor(int key){
 	if (sucessorN->isNotNull()){
 		while (sucessorN->getRightChild()->isNotNull())
 			sucessorN = sucessorN->getRightChild();
+	}else{
+		sucessorN = currentN->getRightChild();
 	}
 	return sucessorN;
 }
@@ -166,7 +172,7 @@ void tree::leftRotation(node **p0){
 	p1->setLeftChild(*p0);
 	(*p0)->setRightChild(p2);
 
-	if(parent != NULL){
+	if(parent->isNotNull()){
 		if(parent->getLeftChild() == (*p0)){
 			parent->setLeftChild(p1);
 		}
@@ -187,7 +193,7 @@ void tree::rightRotation(node **p0){
 	p1->setRightChild(*p0);
 	(*p0)->setLeftChild(p2);
 
-	if(parent != NULL){
+	if(parent->isNotNull()){
 		if(parent->getLeftChild() == (*p0)){
 		parent->setLeftChild(p1);
 		}
@@ -241,7 +247,11 @@ void tree::replace(node* currentN, node* sucessorN){
 		parentN->setLeftChild(sucessorN);
 	else
 		parentN->setRightChild(sucessorN);
-
+	
+	if (currentN == root){
+		root = sucessorN;
+	}
+	
 	if(sucessorN->isNotNull()){
 		if(currentN->getLeftChild() != sucessorN)
 			sucessorN->setLeftChild(currentN->getLeftChild());
@@ -290,7 +300,7 @@ void tree::balance(node* currentN){
 		node* grampaN = getGrampa(currentN->getKey());
 
 		/* CASE 1: NODE IS ROOT: */
-		if (parentN == NULL){
+		if (currentN == root){
 			cout << "Case 1." << endl;
 			/* NODE CHANGES TO BLACK */
 			currentN->setColor('b');
@@ -373,9 +383,14 @@ void tree::remove(int key){
 		cout << "Error: Node not found.\n";
 		return;
 	}
-
+	
 	node* sucessorN = getSucessor(currentN->getKey());
-	node* sublingN = getSibling(currentN->getKey());
+	if(currentN != root){
+		node* sublingN = getSibling(currentN->getKey());
+	}
+	else{
+		node* siblingN = new node();
+	}
 	
 	/* STEP 1: STANDARD BST REMOVAL */
 	replace(currentN, sucessorN);

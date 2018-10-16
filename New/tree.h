@@ -424,17 +424,29 @@ void tree::remove(int key){
 		else{
 			
 			cout << "Case 2.2.";
-
+			
 			node* siblingN = getSibling(sucessorN->getKey());
 			node* parentN = getParent(sucessorN->getKey());
+			/* CASE 2.2.a||b: IF SIBLING IS BLACK */
+			
+			if(parentN->getLeftChild() != sucessorN and parentN->getRightChild()!= sucessorN){
+				parentN = getParent(parentN->getKey());
+				if (parentN->getLeftChild()==sucessorN){
+					siblingN = parentN->getRightChild();
+				}else{
+					siblingN = parentN->getLeftChild();
+				}
+			}
+			
 			node* leftchildN = siblingN->getLeftChild();
 			node* rightchildN = siblingN->getRightChild();
-			/* CASE 2.2.a||b: IF SIBLING IS BLACK */
-			if (siblingN->getColor()=='b'){
-				
+			
+			cout << endl <<siblingN->getColor() << "   " << siblingN->getKey() << endl;
+			
+			if (siblingN->getColor()=='b' or siblingN->getColor()=='B'){
 				/* CASE 2.2.a: IF AT LEAST ONE CHILDREN IS RED */
 				if (leftchildN->getColor()=='r' or rightchildN->getColor()=='r'){
-					cout << "a.\n.";
+					cout << "a.\n";
 					/* CASE 2.2.a.i: SUCESSOR IS A LEFT CHILD AND REDCHILD IS A LEFT CHILD */
 					if (siblingN==parentN->getLeftChild() and leftchildN->getColor()=='r'){
 						/* RIGHT ROTATION ON PARENT AND RECOLOR CHILD */
@@ -444,10 +456,12 @@ void tree::remove(int key){
 					/* CASE 2.2.a.ii: SUCESSOR IS A LEFT CHILD AND REDCHILD IS A RIGHT CHILD */
 					else if (siblingN==parentN->getLeftChild() and rightchildN->getColor()=='r'){
 						/* DOUBLE RIGHT ROTATION ON PARENT AND RECOLOR CHILD*/
+						cout << "ALO" << endl;
 						leftRotation(&siblingN);
 						rightRotation(&parentN);
 						rightchildN->switchColor();
 					}
+					cout << rightchildN->getColor() << "   " << parentN->getLeftChild()->getKey() << endl;
 					/* CASE 2.2.a.iii: SUCESSOR IS A RIGHTCHILD AND REDCHILD IS A RIGHT CHILD */
 					if (siblingN==parentN->getRightChild() and rightchildN->getColor()=='r'){
 						/* LEFT ROTATION ON PARENT AND RECOLOR CHILD */
@@ -484,12 +498,12 @@ void tree::remove(int key){
 			}
 			/* CASE 2.2.c: IF SIBLING IS RED */
 			else{
-				cout << ".c.\n";
+				cout << "c.\n";
 				/* ROTATE SIBLING AND RECOLOR SIBLING AND PARENT */
 				if (siblingN==parentN->getLeftChild())
 					rightRotation(&parentN);
 				else
-					leftRotation(&parentN);	
+					leftRotation(&parentN);
 				
 				siblingN->switchColor();
 				parentN->switchColor();							

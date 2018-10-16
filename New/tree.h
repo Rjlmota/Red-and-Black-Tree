@@ -14,8 +14,6 @@ class tree {
 		void eraseData(node *localRoot); // Function used by destructor.
 
 		void printTree(); // Function to print tree.
-
-		node* search(int key); // Function to search for node.
 		
 		node* getParent(int key); // Function used to get the node's parent.
 		node* getGrampa(int key); // Function used to get the node grampa.
@@ -25,6 +23,7 @@ class tree {
 		
 		void leftRotation(node **p); // Function to do a left rotation on a tree.
 		void rightRotation(node **p); // Function to do a right rotation on a tree.
+		node* search(int key); // Function to search for node.
 		void del(node *p); // Function to delete a node.
 		void replace(node* currentN, node* sucessorN); // Function to replace a node with it's sucessor.
 
@@ -39,18 +38,6 @@ tree::tree(){
 }
 
 tree::~tree(){}
-
-node* tree::search(int key){
-	node* currentN = root;
-	while((currentN->isNotNull()) and (currentN->getKey()!=key)){
-
-		if(key < currentN->getKey())
-			currentN = currentN->getLeftChild();
-		else
-			currentN = currentN->getRightChild();
-	}
-	return currentN;
-}
 
 void tree::printTree(){
 
@@ -212,6 +199,23 @@ void tree::rightRotation(node **p0){
 	}
 }
 
+node* tree::search(int key){
+	node* currentN = root;
+	
+	if (currentN == NULL)
+		return NULL;
+
+	while((currentN->isNotNull()) and (currentN->getKey()!=key)){
+		if(key < currentN->getKey())
+			currentN = currentN->getLeftChild();
+		else
+			currentN = currentN->getRightChild();
+	}
+	if (currentN->isNull())
+		return NULL;
+	return currentN;
+}
+
 void tree::del(node* currentN){
 	
 	node *parentN = getParent(currentN->getKey());
@@ -252,23 +256,27 @@ void tree::replace(node* currentN, node* sucessorN){
 
 void tree::insert(int key){
    	
-	node *newN = new node(key);
-
+	cout << "Inserting key: " << key << ".\n";
+	node *newN = search(key);
+	if (newN!=NULL){
+		cout << "Error: Node already exist.\n";
+		return;
+	}
+	newN = new node(key);
+	
 	if (root == NULL){
-		
+
 		root = newN;
 	
-	}else{	
-	
+	}else{
+
 		node* parentN = getParent(key);
+		
 		if (key > parentN->getKey())
 			parentN->setRightChild(newN);
-		else{
+		else
 			parentN->setLeftChild(newN);
-		}
-	
 	}
-	cout << "Inserting key: " << key << ".\n";
 	printTree();
 	cout << "Balancing tree." << endl;
 	balance(newN);
@@ -356,10 +364,16 @@ void tree::balance(node* currentN){
 }
 
 void tree::remove(int key){
-	
+
 	cout << "Removing key: " << key << ".\n";
 
 	node* currentN = search(key);
+
+	if (currentN==NULL){
+		cout << "Error: Node not found.\n";
+		return;
+	}
+
 	node* sucessorN = getSucessor(currentN->getKey());
 	node* sublingN = getSibling(currentN->getKey());
 	

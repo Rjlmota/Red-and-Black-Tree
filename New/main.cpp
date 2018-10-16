@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdio.h>
 #include "tree.h"
 //#include <unistd.h>
 using namespace std;
@@ -10,28 +9,35 @@ int main(){
 
   int option = 0;
   int key;
+  node *n = NULL;
   while(option != 5){
-    printf("\n1. Insert node.\n2. Remove node.\n3. Search node.\n4. Show tree.\n5. Quit.\n:>");
-    scanf("%i", &option);
+    cout << "\n1. Insert node.\n2. Remove node.\n3. Search node.\n4. Show tree.\n5. Quit.\n:>";
+    cin >> option;
     
     if (option==5){
       //DO NOTHING
     }else if (option==4){
       arv.printTree();
     }else if (option>=1 and option<=3){
-        printf("Key:>");
-        scanf("%i", &key);
+        cout <<"Key:>";
+        cin >> key;
         if (option==1){
           arv.insert(key);
         }else if (option==2){
           arv.remove(key);
         }else{
-          arv.search(key);
+          n = arv.search(key);
+          if (n==NULL){
+            cout << "Error: Node not found.\n";
+          }else{
+            cout << "Node:" << n << "\nKey: " << n->getKey() << "\nColor: " << n->getColor() << "\n";
+          }
         }
     }else{
-      printf("Option does not exist");
+      cout << "Option does not exist\n";
     }
   }
+
   return 0;
 }  
 
